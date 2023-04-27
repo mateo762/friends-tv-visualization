@@ -1,0 +1,217 @@
+{
+    "nodes": [
+        {
+            "id": "Monica Geller",
+            "group": 1
+        },
+        {
+            "id": "Chandler Bing",
+            "group": 1
+        },
+        {
+            "id": "Joey Tribbiani",
+            "group": 1
+        },
+        {
+            "id": "Ross Geller",
+            "group": 1
+        },
+        {
+            "id": "Rachel Green",
+            "group": 1
+        },
+        {
+            "id": "Phoebe Buffay",
+            "group": 1
+        },
+        {
+            "id": "Mike Hannigan",
+            "group": 2
+        },
+        {
+            "id": "Gunther",
+            "group": 2
+        },
+        {
+            "id": "Judy Geller",
+            "group": 2
+        },
+        {
+            "id": "Carol Willick",
+            "group": 2
+        },
+        {
+            "id": "Richard Burke",
+            "group": 2
+        },
+        {
+            "id": "Janice Litman Goralnik",
+            "group": 2
+        },
+        {
+            "id": "Jack Geller",
+            "group": 2
+        },
+        {
+            "id": "Susan Bunch",
+            "group": 2
+        }
+    ],
+    "links": [
+        {
+            "source": "Monica Geller",
+            "target": "Chandler Bing",
+            "value": 976
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Phoebe Buffay",
+            "value": 821
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Rachel Green",
+            "value": 798
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Joey Tribbiani",
+            "value": 726
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Ross Geller",
+            "value": 683
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Judy Geller",
+            "value": 43
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Richard Burke",
+            "value": 39
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Jack Geller",
+            "value": 34
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Joey Tribbiani",
+            "value": 925
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Ross Geller",
+            "value": 754
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Phoebe Buffay",
+            "value": 703
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Rachel Green",
+            "value": 690
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Gunther",
+            "value": 37
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Janice Litman Goralnik",
+            "value": 36
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Jack Geller",
+            "value": 31
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Rachel Green",
+            "value": 728
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Ross Geller",
+            "value": 722
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Phoebe Buffay",
+            "value": 711
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Gunther",
+            "value": 47
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Rachel Green",
+            "value": 861
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Phoebe Buffay",
+            "value": 672
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Judy Geller",
+            "value": 43
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Gunther",
+            "value": 43
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Carol Willick",
+            "value": 41
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Jack Geller",
+            "value": 33
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Susan Bunch",
+            "value": 32
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Phoebe Buffay",
+            "value": 786
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Gunther",
+            "value": 35
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Judy Geller",
+            "value": 31
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Mike Hannigan",
+            "value": 55
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Gunther",
+            "value": 31
+        }
+    ]
+}
