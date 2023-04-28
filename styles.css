@@ -1,9 +1,37 @@
 .links line {
-    stroke: #999;
     stroke-opacity: 0.6;
 }
 
 .nodes circle {
     stroke: #fff;
     stroke-width: 1.5px;
+}
+
+.edge-tooltip-rect {
+    fill: #e6a4a4; /* Light background color */
+    stroke: #333; /* Dark border color */
+    stroke-width: 1px; /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow */
+}
+
+.edge-tooltip text {
+    font-family: Arial, sans-serif; /* Set a font family */
+    fill: #333; /* Dark text color */
+}
+
+.tooltip rect {
+    fill: #f9f9f9; /* Light background color */
+    stroke: #333; /* Dark border color */
+    stroke-width: 1px; /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow */
+}
+
+.tooltip text {
+    font-family: Arial, sans-serif; /* Set a font family */
+    fill: #333; /* Dark text color */
+}
+
+.fade {
+    opacity: 0;
+    transition: opacity 0.5s;
 }

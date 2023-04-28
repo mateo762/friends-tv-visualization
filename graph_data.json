@@ -61,157 +61,1459 @@
         {
             "source": "Monica Geller",
             "target": "Chandler Bing",
-            "value": 976
+            "value": 976,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "next",
+                    "time"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "living",
+                    "room"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Phoebe Buffay",
-            "value": 821
+            "value": 821,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "feel",
+                    "bad"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Rachel Green",
-            "value": 798
+            "value": 798,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "honey",
+                    "sorry"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "please",
+                    "tell"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Joey Tribbiani",
-            "value": 726
+            "value": 726,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Ross Geller",
-            "value": 683
+            "value": 683,
+            "phrases": [
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "please",
+                    "tell"
+                ],
+                [
+                    "feel",
+                    "better"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Judy Geller",
-            "value": 43
+            "value": 43,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "monica",
+                    "geller"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "wait",
+                    "chandler"
+                ],
+                [
+                    "love",
+                    "much"
+                ],
+                [
+                    "phoebe",
+                    "joey"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Richard Burke",
-            "value": 39
+            "value": 39,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "monica",
+                    "geller"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "wait",
+                    "chandler"
+                ],
+                [
+                    "love",
+                    "much"
+                ],
+                [
+                    "phoebe",
+                    "joey"
+                ]
+            ]
         },
         {
             "source": "Monica Geller",
             "target": "Jack Geller",
-            "value": 34
+            "value": 34,
+            "phrases": [
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "monica",
+                    "geller"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "wait",
+                    "chandler"
+                ],
+                [
+                    "love",
+                    "much"
+                ],
+                [
+                    "phoebe",
+                    "joey"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Joey Tribbiani",
-            "value": 925
+            "value": 925,
+            "phrases": [
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "next",
+                    "time"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "getting",
+                    "married"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Ross Geller",
-            "value": 754
+            "value": 754,
+            "phrases": [
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "take",
+                    "care"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Phoebe Buffay",
-            "value": 703
+            "value": 703,
+            "phrases": [
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "much",
+                    "fun"
+                ],
+                [
+                    "feel",
+                    "bad"
+                ],
+                [
+                    "getting",
+                    "married"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Rachel Green",
-            "value": 690
+            "value": 690,
+            "phrases": [
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "ross",
+                    "said"
+                ],
+                [
+                    "next",
+                    "time"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Gunther",
-            "value": 37
+            "value": 37,
+            "phrases": [
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "next",
+                    "time"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "living",
+                    "room"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "merry",
+                    "christmas"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "big",
+                    "guy"
+                ],
+                [
+                    "beautiful",
+                    "woman"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Janice Litman Goralnik",
-            "value": 36
+            "value": 36,
+            "phrases": [
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "next",
+                    "time"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "living",
+                    "room"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "merry",
+                    "christmas"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "big",
+                    "guy"
+                ],
+                [
+                    "beautiful",
+                    "woman"
+                ]
+            ]
         },
         {
             "source": "Chandler Bing",
             "target": "Jack Geller",
-            "value": 31
+            "value": 31,
+            "phrases": [
+                [
+                    "chandler",
+                    "bing"
+                ],
+                [
+                    "next",
+                    "time"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "living",
+                    "room"
+                ],
+                [
+                    "tomorrow",
+                    "night"
+                ],
+                [
+                    "merry",
+                    "christmas"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "big",
+                    "guy"
+                ],
+                [
+                    "beautiful",
+                    "woman"
+                ]
+            ]
         },
         {
             "source": "Joey Tribbiani",
             "target": "Rachel Green",
-            "value": 728
+            "value": 728,
+            "phrases": [
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "ross",
+                    "said"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "best",
+                    "friend"
+                ]
+            ]
         },
         {
             "source": "Joey Tribbiani",
             "target": "Ross Geller",
-            "value": 722
+            "value": 722,
+            "phrases": [
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "ross",
+                    "geller"
+                ]
+            ]
         },
         {
             "source": "Joey Tribbiani",
             "target": "Phoebe Buffay",
-            "value": 711
+            "value": 711,
+            "phrases": [
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "chandler",
+                    "monica"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "drake",
+                    "remoray"
+                ]
+            ]
         },
         {
             "source": "Joey Tribbiani",
             "target": "Gunther",
-            "value": 47
+            "value": 47,
+            "phrases": [
+                [
+                    "joey",
+                    "tribbiani"
+                ],
+                [
+                    "days",
+                    "lives"
+                ],
+                [
+                    "tell",
+                    "ya"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "drake",
+                    "remoray"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "need",
+                    "help"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "hot",
+                    "girl"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Rachel Green",
-            "value": 861
+            "value": 861,
+            "phrases": [
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "back",
+                    "together"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Phoebe Buffay",
-            "value": 672
+            "value": 672,
+            "phrases": [
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "much",
+                    "fun"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Judy Geller",
-            "value": 43
+            "value": 43,
+            "phrases": [
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "makes",
+                    "feel"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Gunther",
-            "value": 43
+            "value": 43,
+            "phrases": [
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "makes",
+                    "feel"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Carol Willick",
-            "value": 41
+            "value": 41,
+            "phrases": [
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "makes",
+                    "feel"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Jack Geller",
-            "value": 33
+            "value": 33,
+            "phrases": [
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "makes",
+                    "feel"
+                ]
+            ]
         },
         {
             "source": "Ross Geller",
             "target": "Susan Bunch",
-            "value": 32
+            "value": 32,
+            "phrases": [
+                [
+                    "ross",
+                    "geller"
+                ],
+                [
+                    "years",
+                    "ago"
+                ],
+                [
+                    "best",
+                    "friend"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "mom",
+                    "dad"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "need",
+                    "talk"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "makes",
+                    "feel"
+                ]
+            ]
         },
         {
             "source": "Rachel Green",
             "target": "Phoebe Buffay",
-            "value": 786
+            "value": 786,
+            "phrases": [
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "much",
+                    "fun"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "back",
+                    "together"
+                ],
+                [
+                    "chandler",
+                    "monica"
+                ]
+            ]
         },
         {
             "source": "Rachel Green",
             "target": "Gunther",
-            "value": 35
+            "value": 35,
+            "phrases": [
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "ross",
+                    "said"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "honey",
+                    "sorry"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "back",
+                    "together"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "ross",
+                    "please"
+                ]
+            ]
         },
         {
             "source": "Rachel Green",
             "target": "Judy Geller",
-            "value": 31
+            "value": 31,
+            "phrases": [
+                [
+                    "ralph",
+                    "lauren"
+                ],
+                [
+                    "rachel",
+                    "green"
+                ],
+                [
+                    "ross",
+                    "said"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "honey",
+                    "sorry"
+                ],
+                [
+                    "high",
+                    "school"
+                ],
+                [
+                    "back",
+                    "together"
+                ],
+                [
+                    "take",
+                    "care"
+                ],
+                [
+                    "getting",
+                    "married"
+                ],
+                [
+                    "ross",
+                    "please"
+                ]
+            ]
         },
         {
             "source": "Phoebe Buffay",
             "target": "Mike Hannigan",
-            "value": 55
+            "value": 55,
+            "phrases": [
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "chandler",
+                    "monica"
+                ],
+                [
+                    "phoebe",
+                    "buffay"
+                ],
+                [
+                    "much",
+                    "fun"
+                ],
+                [
+                    "feel",
+                    "bad"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "high",
+                    "school"
+                ]
+            ]
         },
         {
             "source": "Phoebe Buffay",
             "target": "Gunther",
-            "value": 31
+            "value": 31,
+            "phrases": [
+                [
+                    "smelly",
+                    "cat"
+                ],
+                [
+                    "monica",
+                    "chandler"
+                ],
+                [
+                    "chandler",
+                    "monica"
+                ],
+                [
+                    "phoebe",
+                    "buffay"
+                ],
+                [
+                    "much",
+                    "fun"
+                ],
+                [
+                    "feel",
+                    "bad"
+                ],
+                [
+                    "long",
+                    "time"
+                ],
+                [
+                    "feel",
+                    "better"
+                ],
+                [
+                    "someone",
+                    "else"
+                ],
+                [
+                    "high",
+                    "school"
+                ]
+            ]
         }
     ]
 }
