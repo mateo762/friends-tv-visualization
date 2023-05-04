@@ -1,7 +1,7 @@
-const width = 800;
+const width = 600;
 const height = 600;
 
-d3.json("https://mateo762.github.io/friends_data/graph_data.json").then(function (graph) {
+d3.json("https://mateo762.github.io/friends_data/gossips.json").then(function (graph) {
 
     const nodes = graph.nodes
     const edges = graph.links
@@ -27,7 +27,9 @@ d3.json("https://mateo762.github.io/friends_data/graph_data.json").then(function
         .force("center", d3.forceCenter(width / 2, height / 2));
 
     const svg = d3.create("svg")
-        .attr("viewBox", [0, 0, width, height]);
+        //.attr("viewBox", [0, 0, width, height]);
+        .attr("width", width)
+        .attr("height", height)
 
 
     const edgeTooltip = svg.append("g")
