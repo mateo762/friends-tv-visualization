@@ -1,0 +1,648 @@
+{
+    "nodes": [
+        {
+            "id": "Rachel Green",
+            "group": 1
+        },
+        {
+            "id": "Ross Geller",
+            "group": 1
+        },
+        {
+            "id": "Chandler Bing",
+            "group": 1
+        },
+        {
+            "id": "Monica Geller",
+            "group": 1
+        },
+        {
+            "id": "Phoebe Buffay",
+            "group": 1
+        },
+        {
+            "id": "Joey Tribbiani",
+            "group": 1
+        },
+        {
+            "id": "Jack Geller",
+            "group": 1
+        },
+        {
+            "id": "Judy Geller",
+            "group": 1
+        },
+        {
+            "id": "Gunther",
+            "group": 1
+        },
+        {
+            "id": "Carol Willick",
+            "group": 1
+        },
+        {
+            "id": "Richard Burke",
+            "group": 1
+        },
+        {
+            "id": "Janice Litman Goralnik",
+            "group": 1
+        },
+        {
+            "id": "Jack Geller",
+            "group": 1
+        },
+        {
+            "id": "Susan Bunch",
+            "group": 1
+        },
+        {
+            "id": "Mike Hannigan",
+            "group": 1
+        }
+    ],
+    "links": [
+        {
+            "source": "Rachel Green",
+            "target": "Monica Geller",
+            "value": 0.10537520795997721,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Ross Geller",
+            "value": 0.6853009533963089,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Monica Geller",
+            "value": 0.6328024426729496,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Monica Geller",
+            "value": 1.6006846854645553,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Monica Geller",
+            "value": 0.17403446235152206,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Monica Geller",
+            "value": 0.6619075740563998,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Ross Geller",
+            "value": 0.27168022895053456,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Rachel Green",
+            "value": 1.5666830356275907,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Ross Geller",
+            "value": -0.014836378194049408,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Rachel Green",
+            "value": 1.2985308997104323,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Ross Geller",
+            "value": -0.19688330860789757,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Chandler Bing",
+            "value": 1.4245468272937258,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Ross Geller",
+            "value": 0.7218856606262237,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Chandler Bing",
+            "value": 0.31469875887887855,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Joey Tribbiani",
+            "value": 0.32615712516685497,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Carol Willick",
+            "value": -1.2292130485312722,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Rachel Green",
+            "value": -0.04600714256185363,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Joey Tribbiani",
+            "value": 0.18307703004234357,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Chandler Bing",
+            "value": 0.8948756457074127,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Chandler Bing",
+            "value": -0.1984005365231893,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Joey Tribbiani",
+            "value": 0.6744555184732002,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Mike Hannigan",
+            "value": 3.351301812529932,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Rachel Green",
+            "value": 0.8446063333107745,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Joey Tribbiani",
+            "value": -0.04600714256185363,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Chandler Bing",
+            "value": 0.403724616017657,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Rachel Green",
+            "value": -0.12593157809724262,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Richard Burke",
+            "value": -1.078097874353816,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Susan Bunch",
+            "value": -1.2292130485312722,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Joey Tribbiani",
+            "value": 0.771519929123694,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Phoebe Buffay",
+            "value": 0.29889074891142353,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Richard Burke",
+            "value": 3.0725785763300535,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Janice Litman Goralnik",
+            "value": 1.1805785019315342,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Phoebe Buffay",
+            "value": 0.06183063185240986,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Jack Geller",
+            "value": 1.0087863399353407,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Jack Geller",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Phoebe Buffay",
+            "value": 0.3276560912715889,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Phoebe Buffay",
+            "value": 0.0010812442970669041,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Phoebe Buffay",
+            "value": 0.7368713735764292,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Richard Burke",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Jack Geller",
+            "value": -0.8265916343658812,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Mike Hannigan",
+            "value": 1.8910338445618569,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Jack Geller",
+            "value": -1.078097874353816,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Jack Geller",
+            "value": -0.8892330796546061,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Janice Litman Goralnik",
+            "value": -0.8265916343658812,
+            "phrases": []
+        },
+        {
+            "source": "Judy Geller",
+            "target": "Jack Geller",
+            "value": 2.4479838798065585,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Gunther",
+            "value": 3.173709271712156,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Richard Burke",
+            "value": -0.8265916343658812,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Carol Willick",
+            "value": -1.078097874353816,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Carol Willick",
+            "value": 0.024928949402915252,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Richard Burke",
+            "value": -1.2292130485312722,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Mike Hannigan",
+            "value": -0.8265916343658812,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Carol Willick",
+            "value": -0.711421572466985,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Janice Litman Goralnik",
+            "value": 0.760119741216828,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Janice Litman Goralnik",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Carol Willick",
+            "target": "Susan Bunch",
+            "value": 3.580549173280249,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Jack Geller",
+            "value": -0.711421572466985,
+            "phrases": []
+        },
+        {
+            "source": "Gunther",
+            "target": "Rachel Green",
+            "value": 3.048703170663174,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Mike Hannigan",
+            "value": -0.334013293144627,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Carol Willick",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Mike Hannigan",
+            "target": "Monica Geller",
+            "value": 1.197102451115626,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Carol Willick",
+            "value": 1.280419059931373,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Judy Geller",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Susan Bunch",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Janice Litman Goralnik",
+            "value": 0.9013232715899657,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Susan Bunch",
+            "value": -1.078097874353816,
+            "phrases": []
+        },
+        {
+            "source": "Judy Geller",
+            "target": "Richard Burke",
+            "value": -0.4256794739069113,
+            "phrases": []
+        },
+        {
+            "source": "Janice Litman Goralnik",
+            "target": "Monica Geller",
+            "value": 0.10268689087059137,
+            "phrases": []
+        },
+        {
+            "source": "Janice Litman Goralnik",
+            "target": "Chandler Bing",
+            "value": 3.1654386759589817,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Richard Burke",
+            "value": -0.8892330796546061,
+            "phrases": []
+        },
+        {
+            "source": "Ross Geller",
+            "target": "Gunther",
+            "value": -1.2292130485312722,
+            "phrases": []
+        },
+        {
+            "source": "Phoebe Buffay",
+            "target": "Gunther",
+            "value": -0.5276321852684318,
+            "phrases": []
+        },
+        {
+            "source": "Mike Hannigan",
+            "target": "Phoebe Buffay",
+            "value": 3.206682344606381,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Mike Hannigan",
+            "value": -0.711421572466985,
+            "phrases": []
+        },
+        {
+            "source": "Janice Litman Goralnik",
+            "target": "Ross Geller",
+            "value": 0.3906655835928411,
+            "phrases": []
+        },
+        {
+            "source": "Gunther",
+            "target": "Monica Geller",
+            "value": 0.713932079791438,
+            "phrases": []
+        },
+        {
+            "source": "Jack Geller",
+            "target": "Richard Burke",
+            "value": 1.207003856844328,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Janice Litman Goralnik",
+            "value": -0.07664460938125384,
+            "phrases": []
+        },
+        {
+            "source": "Joey Tribbiani",
+            "target": "Susan Bunch",
+            "value": -0.8265916343658812,
+            "phrases": []
+        },
+        {
+            "source": "Chandler Bing",
+            "target": "Susan Bunch",
+            "value": -0.711421572466985,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Gunther",
+            "value": 0.24151622294203845,
+            "phrases": []
+        },
+        {
+            "source": "Richard Burke",
+            "target": "Chandler Bing",
+            "value": -0.2053316947190609,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Mike Hannigan",
+            "value": -0.157903456408589,
+            "phrases": []
+        },
+        {
+            "source": "Judy Geller",
+            "target": "Rachel Green",
+            "value": -0.39274350423684284,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Susan Bunch",
+            "value": -0.8892330796546061,
+            "phrases": []
+        },
+        {
+            "source": "Susan Bunch",
+            "target": "Carol Willick",
+            "value": 3.5923047110497293,
+            "phrases": []
+        },
+        {
+            "source": "Monica Geller",
+            "target": "Judy Geller",
+            "value": -1.078097874353816,
+            "phrases": []
+        },
+        {
+            "source": "Richard Burke",
+            "target": "Jack Geller",
+            "value": 2.2907363159495837,
+            "phrases": []
+        },
+        {
+            "source": "Janice Litman Goralnik",
+            "target": "Rachel Green",
+            "value": -0.25860513075538183,
+            "phrases": []
+        },
+        {
+            "source": "Carol Willick",
+            "target": "Joey Tribbiani",
+            "value": -0.29458644345023505,
+            "phrases": []
+        },
+        {
+            "source": "Carol Willick",
+            "target": "Rachel Green",
+            "value": -0.2608896120004048,
+            "phrases": []
+        },
+        {
+            "source": "Gunther",
+            "target": "Chandler Bing",
+            "value": -0.5377347569431792,
+            "phrases": []
+        },
+        {
+            "source": "Jack Geller",
+            "target": "Judy Geller",
+            "value": 3.092782790843379,
+            "phrases": []
+        },
+        {
+            "source": "Jack Geller",
+            "target": "Ross Geller",
+            "value": -0.3208510301917302,
+            "phrases": []
+        },
+        {
+            "source": "Mike Hannigan",
+            "target": "Rachel Green",
+            "value": -0.31038459198335,
+            "phrases": []
+        },
+        {
+            "source": "Rachel Green",
+            "target": "Judy Geller",
+            "value": -0.3266718310038237,
+            "phrases": []
+        },
+        {
+            "source": "Mike Hannigan",
+            "target": "Ross Geller",
+            "value": -0.009608351573476817,
+            "phrases": []
+        },
+        {
+            "source": "Gunther",
+            "target": "Jack Geller",
+            "value": -0.5377347569431792,
+            "phrases": []
+        }
+    ]
+}

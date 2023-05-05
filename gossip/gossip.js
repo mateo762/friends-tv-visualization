@@ -25,7 +25,7 @@ function drag(simulation) {
         .on("end", dragEnded);
 }
 
-d3.json("https://mateo762.github.io/friends_data/gossips.json").then(function (graph) {
+d3.json("https://mateo762.github.io/friends_data/gossips_z_scores.json").then(function (graph) {
 
     const nodes = graph.nodes
     const edges = graph.links
