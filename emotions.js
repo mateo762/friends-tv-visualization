@@ -9,26 +9,31 @@ function startEmotions() {
             x: 5,
             y: 20,
             values: [10, 20, 30, 40],
+            picture: "ross"
         },
         {
             x: 35,
             y: 40,
             values: [25, 15, 30, 10],
+            picture: "monica"
         },
         {
             x: 65,
             y: 25,
             values: [45, 10, 30, 15],
+            picture: "chandler"
         },
         {
             x: 95,
             y: 45,
             values: [25, 50, 15, 10],
+            picture: "phoebe"
         },
         {
             x: 125,
             y: 30,
             values: [25, 15, 30, 10],
+            picture: "joey"
         },
 
 
@@ -95,7 +100,7 @@ function startEmotions() {
 
         // Append the image element
         group.append("image")
-            .attr("xlink:href", "pictures/placeholder.png")
+            .attr("xlink:href", (d, i) => `pictures/${d.picture}.png`)
             .attr("clip-path", "url(#clip)") // Use the clip path
             .attr("x", -25)
             .attr("y", -25)
