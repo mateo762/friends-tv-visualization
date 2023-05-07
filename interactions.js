@@ -66,8 +66,8 @@ function startInteractions() {
             .style("display", "none");
 
         tooltip.append("rect")
-            .attr("width", 150)
-            .attr("height", 50)
+            .attr("width", 300)
+            .attr("height", 80)
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
             .attr("rx", 5)
@@ -80,8 +80,19 @@ function startInteractions() {
             .attr("height", 40);
 
         tooltip.append("text")
+            .attr("class", "text-name")
             .attr("x", 50)
             .attr("y", 30)
+            .attr("font-size", "14px");
+        tooltip.append("text")
+            .attr("class", "text-user")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("font-size", "14px");
+        tooltip.append("text")
+            .attr("class", "text-word")
+            .attr("x", 50)
+            .attr("y", 70)
             .attr("font-size", "14px");
 
 
@@ -137,7 +148,7 @@ function startInteractions() {
                     .attr("y", 100) // Half of the rectangle height
                     .attr("text-anchor", "middle") // Horizontally center the text
                     .attr("dominant-baseline", "middle") // Vertically center the text
-                    .attr("font-size", "20px");
+                    .attr("font-size", "13px");
 
                 const imageName1 = d.source.id.split(' ')[0].toLowerCase();
                 const imageName2 = d.target.id.split(' ')[0].toLowerCase();
@@ -165,7 +176,8 @@ function startInteractions() {
                             }
 
                             // Update the text with the current phrase
-                            phraseText.text(d.phrases[phraseIndex].join(" "));
+                            //phraseText.text(d.phrases[phraseIndex].join(" "));
+                            phraseText.text("words/phrases exchange by them");
 
                             // Fade in the updated phrase
                             phraseText.transition()
@@ -201,8 +213,9 @@ function startInteractions() {
             .on("click", function (event, d) {
                 // Show the tooltip with character's name
                 tooltip.style("display", "block");
-                tooltip.select("text").text(d.id);
-
+                d3.select('.text-name').html(d.id);
+                d3.select('.text-user').html("User he likes to interact more with");
+                d3.select('.text-word').html("Favourite words/phrases to use");
                 console.log(d)
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();

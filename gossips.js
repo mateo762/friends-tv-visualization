@@ -180,8 +180,8 @@ function startInteractions() {
 
                 const imageName1 = d.source.id.split(' ')[0].toLowerCase();
                 const imageName2 = d.target.id.split(' ')[0].toLowerCase();
-                edgeTooltip.select('.image-1').attr("href", `../pictures/${imageName1}.png`)
-                edgeTooltip.select('.image-2').attr("href", `../pictures/${imageName2}.png`)
+                edgeTooltip.select('.image-1').attr("href", `pictures/${imageName1}.png`)
+                edgeTooltip.select('.image-2').attr("href", `pictures/${imageName2}.png`)
 
 
                 // Create a variable to keep track of the current phrase index
@@ -245,7 +245,7 @@ function startInteractions() {
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
 
-                tooltip.select("image").attr("href", `../pictures/${imageName}.png`);
+                tooltip.select("image").attr("href", `pictures/${imageName}.png`);
 
                 // Position the tooltip based on the node's coordinates
                 tooltip.attr("transform", `translate(${d.x + 10}, ${d.y - 25})`);
@@ -263,7 +263,7 @@ function startInteractions() {
             .attr("href", function (d) {
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
-                return `../pictures/${imageName}.png`;
+                return `pictures/${imageName}.png`;
             }); // Set the image source
 
         node.append("title")
