@@ -19,7 +19,8 @@ function startInteractions() {
             .range([1, 10]); // Adjust the range to suitable values for the edge thickness
 
         // Modify the linkColor scale
-        const linkColor = d3.scaleSequential(t => d3.interpolatePurples(0.3 + 0.7 * t)).domain([minWeight, maxWeight]);
+        const linkColorMain = d3.scaleSequential(t => d3.interpolateBlues(0.2 + 0.8 * t)).domain([672, 976]);
+        const linkColorSec = d3.scaleSequential(t => d3.interpolateOranges(0.2 + 0.8 * t)).domain([31, 55]);
 
 
         const simulation = d3.forceSimulation(nodes)
@@ -98,7 +99,6 @@ function startInteractions() {
 
         svg.on("click", function (event) {
             // Check if the event target is not a node
-            console.log(event.target.classList)
             if (
                 !event.target.classList.contains("node") &&
                 !(event.target.parentElement && event.target.parentElement.classList.contains("node")) &&
@@ -119,14 +119,25 @@ function startInteractions() {
             .join("line")
             .attr("stroke-width", d => 8)
             .attr("class", "link")
-            .attr("stroke", d => linkColor(d.value))
+            .attr("stroke", d => {
+                if (d.source.group == 2 || d.target.group == 2) {
+                    return linkColorSec(d.value)
+                } else {
+                    return linkColorMain(d.value)
+                }
+            })
             .on("mouseover", function (event, d) {
                 // Change the stroke color to green on hover
                 d3.select(this).attr("stroke", "green");
             })
             .on("mouseout", function (event, d) {
                 // Reset the stroke color to its original value when the mouse leaves
-                d3.select(this).attr("stroke", linkColor(d.value));
+                console.log(d.source.group)
+                if (d.source.group == 2 || d.target.group == 2) {
+                    d3.select(this).attr("stroke", linkColorSec(d.value));
+                } else {
+                    d3.select(this).attr("stroke", linkColorMain(d.value));
+                }
             })
             .on("click", function (event, d) {
                 // Hide the character tooltip
@@ -140,7 +151,6 @@ function startInteractions() {
 
                 // Clear previous text elements
                 edgeTooltip.selectAll("text").remove();
-                console.log(d)
 
                 // Add a single text element for the phrases
                 const phraseText = edgeTooltip.append("text")
@@ -216,7 +226,6 @@ function startInteractions() {
                 d3.select('.text-name').html(d.id);
                 d3.select('.text-user').html("User he likes to interact more with");
                 d3.select('.text-word').html("Favourite words/phrases to use");
-                console.log(d)
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
 
