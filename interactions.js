@@ -132,7 +132,6 @@ function startInteractions() {
             })
             .on("mouseout", function (event, d) {
                 // Reset the stroke color to its original value when the mouse leaves
-                console.log(d.source.group)
                 if (d.source.group == 2 || d.target.group == 2) {
                     d3.select(this).attr("stroke", linkColorSec(d.value));
                 } else {
