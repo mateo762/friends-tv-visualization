@@ -2,7 +2,7 @@ function startInteractions() {
     const width = 600;
     const height = 600;
 
-    d3.json("https://mateo762.github.io/friends_data/interactions.json").then(function (graph) {
+    d3.json("https://mateo762.github.io/friends_data/interactions2.json").then(function (graph) {
 
         const nodes = graph.nodes
         const edges = graph.links
@@ -41,7 +41,7 @@ function startInteractions() {
         edgeTooltip.append("rect")
             .attr("class", "edge-tooltip-rect")
             .attr("width", 200)
-            .attr("height", 120)
+            .attr("height", 180)
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
             .attr("rx", 5)
@@ -170,35 +170,36 @@ function startInteractions() {
 
                 // Use d3.interval to update the displayed phrase every second
                 // Use d3.interval to update the displayed phrase every second
-                const interval = d3.interval(() => {
-                    // Fade out the current phrase
-                    phraseText.transition()
-                        .duration(500)
-                        .style("opacity", 0)
-                        .on("end", () => {
-                            // Increment the phrase index
-                            phraseIndex++;
 
-                            // If we've reached the end of the phrases, reset the index to 0
-                            if (phraseIndex >= d.phrases.length) {
-                                phraseIndex = 0;
-                            }
+                // Prepare the data for the word cloud
+                let words = d.phrases.map(word => ({ text: word, size: 10 /* Replace this with the actual frequency of the word */ }));
 
-                            // Update the text with the current phrase
-                            //phraseText.text(d.phrases[phraseIndex].join(" "));
-                            phraseText.text("words/phrases exchange by them");
+                // Create a new layout instance
+                let layout = d3.layout.cloud()
+                    .size([200, 120]) // Set the size of the word cloud to the same size as your tooltip
+                    .words(words)
+                    .padding(5)
+                    .rotate(() => ~~(Math.random() * 2) * 90)
+                    .font("Impact")
+                    .fontSize(d => d.size)
+                    .on("end", draw);
 
-                            // Fade in the updated phrase
-                            phraseText.transition()
-                                .duration(500)
-                                .style("opacity", 1);
-                        });
-                }, 1000);
+                // Start the layout calculation
+                layout.start();
 
-                // Stop the interval when the edge tooltip is hidden
-                edgeTooltip.on("mouseleave", () => {
-                    interval.stop();
-                });
+                function draw(words) {
+                    edgeTooltip.append("g")
+                        .attr("transform", "translate(100,120)") // Center the word cloud in the tooltip
+                        .selectAll("text")
+                        .data(words)
+                        .enter().append("text")
+                        .style("font-size", d => `${d.size}px`)
+                        .style("font-family", "Impact")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
+                        .text(d => d.text);
+                }
+
             });
 
 
