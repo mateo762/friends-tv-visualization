@@ -35,3 +35,15 @@
     opacity: 0;
     transition: opacity 0.5s;
 }
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    pointer-events: none;
+  }
