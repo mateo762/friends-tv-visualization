@@ -57,6 +57,14 @@ function startEmotions() {
     const legendGroup = svg.append('g')
     .attr('transform', `translate(${width},${padding})`);
     
+    // Append a text display element
+    const textDisplay = legendGroup
+    .append('text')
+    .attr('id', 'text-display')
+    .attr('x', 0)
+    .attr('y', 300)
+    .text('TEST');
+    
     const maxX = width - padding - legendWidth;
     
     const xScale = d3.scaleLinear()
@@ -124,11 +132,11 @@ function startEmotions() {
         .style('opacity', 0.6)
         .on('mouseover', function (d) {
             
-        // Get the data associated with the hovered segment
-        const segmentData = d3.select(this).datum().data;
-
-        // Display the data in the tooltip
-        tooltip.transition()
+            // Get the data associated with the hovered segment
+            const segmentData = d3.select(this).datum().data;
+            
+            // Display the data in the tooltip
+            tooltip.transition()
             .duration(200)
             .style('opacity', 0.9);
             tooltip.html(`${(segmentData*100).toFixed(2)}%`)
@@ -178,7 +186,9 @@ function startEmotions() {
     .enter()
     .append('g')
     .attr('class', 'legend')
-    .attr('transform', (d, i) => `translate(0, ${i * 40})`);
+    .attr('transform', (d, i) => `translate(0, ${i * 40})`)
+    .attr('data-id', (d, i) => i); // Assign a unique identifier to each legend item
+    
     
     legend.append('rect')
     .attr('x', 0)
@@ -193,50 +203,89 @@ function startEmotions() {
     .attr('y', 14)
     .text(d => d.label)
     .style('font-size', '18px');
+    
+    // Add click event listener to legend elements
+    legend.selectAll('rect')
+    .on('click', function(event, d) {
+        const matchingPaths = [];
+        const notMatchingPaths = [];
+        const clickedRect = d3.select(this)
+        const newRectOpacity = clickedRect.style('opacity') === '1' ? 0.6 : 1;
+        clickedRect.transition().style('opacity', newRectOpacity)
 
-// Add click event listener to legend elements
-legend.selectAll('rect')
-  .on('click', function(event, d) {
-
-    const rectOpacity = d3.select(this).style('opacity') === '1' ? 0.6 : 1
-    d3.select(this).style('opacity', rectOpacity)
-    const matchingPaths = [];
-
-    // Iterate over each pie chart group
-    groups.each(function() {
-        const group = d3.select(this);
-        const legendIndex = legendData.findIndex(entry => entry.label === d.label);
-
-      
-        // Iterate over each path in the pie chart
-        group.selectAll('path')
-          .each(function(segmentData) {
-            // console.log("segmentData.index: " + segmentData.index)
-            // console.log("legendIndex: " + legendIndex)
-
-            // Check if the data matches the clicked legend entry
-            if (segmentData.index === legendIndex) {
-              matchingPaths.push(d3.select(this));
+        // Get the unique identifier of the clicked legend item
+        const clickedId = clickedRect.node().parentNode.getAttribute('data-id');
+        
+        // Iterate over each legend rectangle
+        legend.selectAll('rect')
+        .each(function () {
+            const rect = d3.select(this);
+        // Get the unique identifier of the current legend item
+        const rectId = rect.node().parentNode.getAttribute('data-id');
+            if (clickedId !== rectId) {
+                // Set the opacity based on the clicked legend item
+                rect
+                .transition()
+                .style('opacity', 0.6);
             }
-          });
-      });
-      
-      
-
-    // Update the style of the matching paths
-    // Toggle the opacity and radii of the selected paths
-    const currentOpacity = matchingPaths[0].style('opacity');
-    const newOpacity = currentOpacity === '1' ? 0.6 : 1;
-    matchingPaths.forEach(function(path) {
-      path.transition()
-        .style('opacity', newOpacity)
+            else{
+                rect
+                .transition()
+                .style('opacity', newRectOpacity);
+            }
+        });
+        
+        
+        
+        // Iterate over each pie chart group
+        groups.each(function() {
+            const group = d3.select(this);
+            const legendIndex = legendData.findIndex(entry => entry.label === d.label);
+            
+            
+            // Iterate over each path in the pie chart
+            group.selectAll('path')
+            .each(function(segmentData) {
+                // console.log("segmentData.index: " + segmentData.index)
+                // console.log("legendIndex: " + legendIndex)
+                
+                // Check if the data matches the clicked legend entry
+                if (segmentData.index === legendIndex) {
+                    matchingPaths.push(d3.select(this));
+                }
+                else{
+                    notMatchingPaths.push(d3.select(this));
+                }
+            });
+        });    
+        
+        // Update the style of the matching paths
+        // Toggle the opacity and radii of the selected paths
+        const currentOpacity = matchingPaths[0].style('opacity');
+        const newOpacity = currentOpacity === '1' ? 0.6 : 1;
+        matchingPaths.forEach(function(path) {
+            path.transition()
+            .style('opacity', newOpacity)
+        })
+        notMatchingPaths.forEach(function(path) {
+            path.transition()
+            .style('opacity', 0.6)
+        }
+        );
+        
+        // Change text box beneath legend
+        const selectedText = d.label;
+        textDisplay.text(selectedText);
+        if(newRectOpacity === 0.6){
+            textDisplay.text("TEST")
+        }
+        
     });
-  });
-      
-
-
-
-
+    
+    
+    
+    
+    
 }
 
 startEmotions()
