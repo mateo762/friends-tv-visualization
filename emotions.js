@@ -64,6 +64,47 @@ function startEmotions() {
     .attr('x', 0)
     .attr('y', 300)
     .text('TEST');
+
+    const xAxisWidth = width;
+    const xAxisHeight = 20;
+    const xAxisX = padding;
+    const xAxisY = height - padding;
+
+    const xAxis = svg
+    .append('svg')
+    .attr('class', 'x-axis')
+    .attr('width', xAxisWidth)
+    .attr('height', xAxisHeight)
+    .attr('x', xAxisX)
+    .attr('y', xAxisY);
+
+    xAxis.style('background-color', '#f0f0f0').style('border', '1px solid #ccc');
+    const seasons = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6','Season 7', 'Season 8', 'Season 9','Season 10', 'Season 11', 'Season 12']; // Replace with your season data
+    const axisScale = d3
+    .scaleBand()
+    .domain(seasons)
+    .range([0, width - 2*padding])
+    .padding(0.1);
+
+    const seasonRects = xAxis
+    .selectAll('rect')
+    .data(seasons)
+    .enter()
+    .append('rect')
+    .attr('x', (d) => axisScale(d))
+    .attr('y', 0)
+    .attr('width', axisScale.bandwidth())
+    .attr('height', xAxisHeight)
+    .style('fill', '#ccc')
+    .style('cursor', 'pointer')
+    .on('click', handleSeasonClick);
+
+    function handleSeasonClick(event, season) {
+        // Update the data for the pie charts based on the selected season
+        // Redraw the pie charts with the updated data
+        console.log('Selected season:', season);
+        // Implement your logic here to update and redraw the pie charts
+      }
     
     const maxX = width - padding - legendWidth;
     
