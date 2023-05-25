@@ -79,7 +79,9 @@ function startEmotions() {
     .attr('y', xAxisY);
 
     xAxis.style('background-color', '#f0f0f0').style('border', '1px solid #ccc');
-    const seasons = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6','Season 7', 'Season 8', 'Season 9','Season 10', 'Season 11', 'Season 12']; // Replace with your season data
+    const seasons = ['Season 1', 'Season 2', 'Season 3', 'Season 4', 'Season 5', 'Season 6','Season 7', 'Season 8', 'Season 9','Season 10', 'Season 11', 'Season 12']; // 
+    const selectedSeasons = [];
+
     const axisScale = d3
     .scaleBand()
     .domain(seasons)
@@ -97,12 +99,41 @@ function startEmotions() {
     .attr('height', xAxisHeight)
     .style('fill', '#ccc')
     .style('cursor', 'pointer')
-    .on('click', handleSeasonClick);
+    .style('opacity', 0.4)
+    .on('click', handleSeasonClick)
+    .on('mouseover', function (d) {
+        d3.select(this)
+        .attr('d', seasonRects)
+        .transition()
+        .style('opacity', 1)
+    })
+    .on('mouseout', function (event, d) {
+        console.log(d)
+        if (!selectedSeasons.includes(d)){ 
+            d3.select(this)
+            .attr('d', seasonRects)
+            .transition()
+            .style('opacity', 0.4)
+        }
+    })
 
     function handleSeasonClick(event, season) {
         // Update the data for the pie charts based on the selected season
         // Redraw the pie charts with the updated data
         console.log('Selected season:', season);
+        if (!selectedSeasons.includes(season)){
+            selectedSeasons.push(season)
+            d3.select(this)
+            .transition()
+            .style('opacity', 1)
+        }
+        else{
+            selectedSeasons.splice(selectedSeasons.indexOf(season), 1)
+            d3.select(this)
+            .transition()
+            .style('opacity', 0.4)
+        }
+        console.log('Selected seasons:', selectedSeasons);
         // Implement your logic here to update and redraw the pie charts
       }
     
