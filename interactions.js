@@ -41,11 +41,11 @@ function startInteractions() {
             .attr("class", "edge-tooltip")
             .style("display", "none");
 
-        const xRect = width*2/3
+        const xRect = width * 2 / 3
 
         edgeTooltip.append("rect")
             .attr("class", "edge-tooltip-rect")
-            .attr("width", width/3)
+            .attr("width", width / 3)
             .attr("height", height)
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
@@ -178,8 +178,21 @@ function startInteractions() {
                 // Use d3.interval to update the displayed phrase every second
 
                 // Prepare the data for the word cloud
-                let words = d.phrases.map(word => ({ text: word[0], size: word[1] /* Replace this with the actual frequency of the word */ }));
-                let xd = d.phrases.map(word => console.log(word))
+                let words = d.phrases.map(word => ({ text: word[0], size: word[1] }));
+
+                // Compute the domain of your size values
+                let sizeDomain = d3.extent(words, d => d.size);
+
+                // Decide on your font size range
+                let fontSizeRange = [30, 60]; // Change this to fit your design
+
+                // Create a scale for the font sizes
+                let fontSizeScale = d3.scaleLinear()
+                    .domain(sizeDomain)
+                    .range(fontSizeRange);
+
+                words = words.map(word => ({ text: word.text, size: fontSizeScale(word.size)}))
+                console.log(words)
 
                 // Create a new layout instance
                 let layout = d3.layout.cloud()
@@ -188,7 +201,7 @@ function startInteractions() {
                     .padding(5)
                     .rotate(() => ~~(Math.random() * 2) * 90)
                     .font("Impact")
-                    .fontSize(d => d.size * 8)
+                    .fontSize(d => d.size) // Use the scale here
                     .on("end", draw);
 
                 // Start the layout calculation
