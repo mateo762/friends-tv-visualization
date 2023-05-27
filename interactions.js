@@ -2,7 +2,7 @@ function startInteractions() {
     const width = 1500;
     const height = 800;
 
-    d3.json("https://mateo762.github.io/friends_data/interactions.json").then(function (graph) {
+    d3.json("https://mateo762.github.io/friends_data/interactions_season_8_to_10.json").then(function (graph) {
 
         const nodes = graph.nodes
         const edges = graph.links
@@ -12,17 +12,32 @@ function startInteractions() {
 
 
         // Calculate the domain (min and max weights) from the graph.links data
-        const minWeight = d3.min(edges, d => d.value);
-        const maxWeight = d3.max(edges, d => d.value);
 
-        // Create a linear scale for the edge weights
-        const edgeWeightScale = d3.scaleLinear()
-            .domain([minWeight, maxWeight])
-            .range([1, 10]); // Adjust the range to suitable values for the edge thickness
+        // Create a map of node ids to their groups
+        const nodeGroups = new Map(nodes.map(node => [node.id, node.group]));
+
+        // Filter the edges where the source and the target are in group 1
+        const group1Edges = edges.filter(edge => nodeGroups.get(edge.source) === 1 && nodeGroups.get(edge.target) === 1);
+
+        // Get the edge values for group 1
+        const group1Values = group1Edges.map(edge => edge.value);
+
+        // Filter the edges where either the source or the target are in group 2
+        const group2Edges = edges.filter(edge => nodeGroups.get(edge.source) === 2 || nodeGroups.get(edge.target) === 2);
+
+        // Get the edge values for group 2
+        const group2Values = group2Edges.map(edge => edge.value);
+
+        // Compute the maximum and minimum values for each group
+        const maxGroup1Value = Math.max(...group1Values);
+        const minGroup1Value = Math.min(...group1Values);
+        const maxGroup2Value = Math.max(...group2Values);
+        const minGroup2Value = Math.min(...group2Values);
+
 
         // Modify the linkColor scale
-        const linkColorMain = d3.scaleSequential(t => d3.interpolateBlues(0.2 + 0.8 * t)).domain([672, 976]);
-        const linkColorSec = d3.scaleSequential(t => d3.interpolateOranges(0.2 + 0.8 * t)).domain([31, 55]);
+        const linkColorMain = d3.scaleSequential(t => d3.interpolateBlues(0.2 + 0.8 * t)).domain([minGroup1Value, maxGroup1Value]);
+        const linkColorSec = d3.scaleSequential(t => d3.interpolateOranges(0.2 + 0.8 * t)).domain([minGroup2Value, maxGroup2Value]);
 
 
         const simulation = d3.forceSimulation(nodes)
@@ -191,12 +206,12 @@ function startInteractions() {
                     .domain(sizeDomain)
                     .range(fontSizeRange);
 
-                words = words.map(word => ({ text: word.text, size: fontSizeScale(word.size)}))
+                words = words.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
                 console.log(words)
 
                 // Create a new layout instance
                 let layout = d3.layout.cloud()
-                    .size([500, 800]) // Set the size of the word cloud to the same size as your tooltip
+                    .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
                     .words(words)
                     .padding(5)
                     .rotate(() => ~~(Math.random() * 2) * 90)
@@ -209,7 +224,7 @@ function startInteractions() {
 
                 function draw(words) {
                     edgeTooltip.append("g")
-                        .attr("transform", "translate(1250,400)") // Center the word cloud in the tooltip
+                        .attr("transform", "translate(1250,340)") // Center the word cloud in the tooltip
                         .selectAll("text")
                         .data(words)
                         .enter().append("text")
@@ -220,6 +235,30 @@ function startInteractions() {
                         .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
                         .text(d => d.text);
                 }
+
+
+                // Start of new bar chart code
+                const barChartData = [1, 2, 1, 2, 1, 2, 1, 2, 3, 1];
+                const barChartWidth = 300;
+                const barChartHeight = 100;
+                const barPadding = 1;
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, d3.max(barChartData)])
+                    .range([0, barChartHeight]);
+
+                const barChart = edgeTooltip.append("g")
+                    .attr("transform", `translate(${width * 2 / 3}, 700)`);  // move the g element
+
+                barChart.selectAll("rect")
+                    .data(barChartData)
+                    .enter()
+                    .append("rect")
+                    .attr("x", (d, i) => (i * (barChartWidth / barChartData.length)))
+                    .attr("y", d => barChartHeight - yScale(d))  // adjust y value
+                    .attr("width", barChartWidth / barChartData.length - barPadding)
+                    .attr("height", d => yScale(d))
+                    .attr("fill", "teal");
 
             });
 
