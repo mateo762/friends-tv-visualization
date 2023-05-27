@@ -35,3 +35,17 @@
     opacity: 0;
     transition: opacity 0.5s;
 }
+
+.container {
+    width: 80%;  /* Set the width of the container to 80% of the parent element */
+    margin: 0 auto; /* Set the margins on the top and bottom to 0, and auto on the left and right to center the div horizontally */
+    display: flex;  /* Use flexbox layout to organize child elements */
+    flex-direction: column;  /* Align child elements in a column */
+    align-items: center;  /* Center child elements horizontally */
+    justify-content: center; /* Center child elements vertically */
+}
+
+
+.interaction-div{
+    background-color: aqua;
+}

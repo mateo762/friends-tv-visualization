@@ -1,13 +1,15 @@
 function startInteractions() {
-    const width = 600;
-    const height = 600;
+    const width = 1500;
+    const height = 800;
 
-    d3.json("https://mateo762.github.io/friends_data/interactions2.json").then(function (graph) {
+    d3.json("https://mateo762.github.io/friends_data/interactions.json").then(function (graph) {
 
         const nodes = graph.nodes
         const edges = graph.links
 
         const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const colorCloud = d3.scaleOrdinal(d3.schemeCategory10);
+
 
         // Calculate the domain (min and max weights) from the graph.links data
         const minWeight = d3.min(edges, d => d.value);
@@ -25,40 +27,44 @@ function startInteractions() {
 
         const simulation = d3.forceSimulation(nodes)
             .force("link", d3.forceLink(edges).id(d => d.id).distance(50))
-            .force("charge", d3.forceManyBody().strength(-1200))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("charge", d3.forceManyBody().strength(-4200))
+            .force("center", d3.forceCenter(width / 3, height / 2));
 
-        const svg = d3.create("svg")
+        const svg = d3.select("#interaction").append("svg")
             //.attr("viewBox", [0, 0, width, height]);
             .attr("width", width)
             .attr("height", height)
+            .attr("class", "interaction-div")
 
 
         const edgeTooltip = svg.append("g")
             .attr("class", "edge-tooltip")
             .style("display", "none");
 
+        const xRect = width*2/3
+
         edgeTooltip.append("rect")
             .attr("class", "edge-tooltip-rect")
-            .attr("width", 200)
-            .attr("height", 180)
+            .attr("width", width/3)
+            .attr("height", height)
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
             .attr("rx", 5)
-            .attr("ry", 5);
+            .attr("ry", 5)
+            .attr("x", xRect)
 
         edgeTooltip.append("image")
-            .attr("x", 5)
-            .attr("y", 5)
-            .attr("width", 60)
-            .attr("height", 60)
+            .attr("x", xRect + 20)
+            .attr("y", 20)
+            .attr("width", 100)
+            .attr("height", 100)
             .attr("class", "image-1");
 
         edgeTooltip.append("image")
-            .attr("x", 135)
-            .attr("y", 5)
-            .attr("width", 60)
-            .attr("height", 60)
+            .attr("x", xRect + 400 - 20)
+            .attr("y", 20)
+            .attr("width", 100)
+            .attr("height", 100)
             .attr("class", "image-2");
 
         // Create the tooltip-like element
@@ -117,7 +123,7 @@ function startInteractions() {
             .selectAll("line")
             .data(edges)
             .join("line")
-            .attr("stroke-width", d => 8)
+            .attr("stroke-width", d => 18)
             .attr("class", "link")
             .attr("stroke", d => {
                 if (d.source.group == 2 || d.target.group == 2) {
@@ -172,16 +178,17 @@ function startInteractions() {
                 // Use d3.interval to update the displayed phrase every second
 
                 // Prepare the data for the word cloud
-                let words = d.phrases.map(word => ({ text: word, size: 10 /* Replace this with the actual frequency of the word */ }));
+                let words = d.phrases.map(word => ({ text: word[0], size: word[1] /* Replace this with the actual frequency of the word */ }));
+                let xd = d.phrases.map(word => console.log(word))
 
                 // Create a new layout instance
                 let layout = d3.layout.cloud()
-                    .size([200, 120]) // Set the size of the word cloud to the same size as your tooltip
+                    .size([500, 800]) // Set the size of the word cloud to the same size as your tooltip
                     .words(words)
                     .padding(5)
                     .rotate(() => ~~(Math.random() * 2) * 90)
                     .font("Impact")
-                    .fontSize(d => d.size)
+                    .fontSize(d => d.size * 8)
                     .on("end", draw);
 
                 // Start the layout calculation
@@ -189,12 +196,13 @@ function startInteractions() {
 
                 function draw(words) {
                     edgeTooltip.append("g")
-                        .attr("transform", "translate(100,120)") // Center the word cloud in the tooltip
+                        .attr("transform", "translate(1250,400)") // Center the word cloud in the tooltip
                         .selectAll("text")
                         .data(words)
                         .enter().append("text")
                         .style("font-size", d => `${d.size}px`)
                         .style("font-family", "Impact")
+                        .style("fill", (_d, i) => colorCloud(i))
                         .attr("text-anchor", "middle")
                         .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
                         .text(d => d.text);
@@ -236,14 +244,14 @@ function startInteractions() {
             });
 
         node.append("circle") // Add a circle element to the 'g' element
-            .attr("r", 20) // Change the radius to 30
+            .attr("r", 40) // Change the radius to 30
             .attr("fill", d => color(d.group));
 
         node.append("image") // Add an image element to the 'g' element
-            .attr("x", -15) // Center the image horizontally
-            .attr("y", -15) // Center the image vertically
-            .attr("width", 30) // Set the image width
-            .attr("height", 30) // Set the image height
+            .attr("x", -35) // Center the image horizontally
+            .attr("y", -35) // Center the image vertically
+            .attr("width", 70) // Set the image width
+            .attr("height", 70) // Set the image height
             .attr("href", function (d) {
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
@@ -254,6 +262,11 @@ function startInteractions() {
             .text(d => d.name);
 
         simulation.on("tick", () => {
+            nodes.forEach(function (d) {
+                d.x = Math.max(40, Math.min(width - 40, d.x));
+                d.y = Math.max(40, Math.min(height - 40, d.y));
+            });
+
             link.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
@@ -269,10 +282,12 @@ function startInteractions() {
                 event.subject.fy = event.subject.y;
             }
 
-            function dragged(event) {
-                event.subject.fx = event.x;
-                event.subject.fy = event.y;
+
+            function dragged(event, d) {
+                d.fx = Math.max(40, Math.min(width - 40, event.x));
+                d.fy = Math.max(40, Math.min(height - 40, event.y));
             }
+
 
             function dragended(event) {
                 if (!event.active) simulation.alphaTarget(0);
@@ -286,7 +301,6 @@ function startInteractions() {
                 .on("end", dragended);
         }
 
-        document.body.appendChild(svg.node());
     });
 
 
