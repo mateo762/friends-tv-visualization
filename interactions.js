@@ -1,63 +1,85 @@
 function startInteractions() {
-    const width = 600;
-    const height = 600;
+    const width = 1500;
+    const height = 800;
 
-    d3.json("https://mateo762.github.io/friends_data/interactions.json").then(function (graph) {
+    d3.json("https://mateo762.github.io/friends_data/interactions_season_8_to_10.json").then(function (graph) {
 
         const nodes = graph.nodes
         const edges = graph.links
 
         const color = d3.scaleOrdinal(d3.schemeCategory10);
+        const colorCloud = d3.scaleOrdinal(d3.schemeCategory10);
+
 
         // Calculate the domain (min and max weights) from the graph.links data
-        const minWeight = d3.min(edges, d => d.value);
-        const maxWeight = d3.max(edges, d => d.value);
 
-        // Create a linear scale for the edge weights
-        const edgeWeightScale = d3.scaleLinear()
-            .domain([minWeight, maxWeight])
-            .range([1, 10]); // Adjust the range to suitable values for the edge thickness
+        // Create a map of node ids to their groups
+        const nodeGroups = new Map(nodes.map(node => [node.id, node.group]));
+
+        // Filter the edges where the source and the target are in group 1
+        const group1Edges = edges.filter(edge => nodeGroups.get(edge.source) === 1 && nodeGroups.get(edge.target) === 1);
+
+        // Get the edge values for group 1
+        const group1Values = group1Edges.map(edge => edge.value);
+
+        // Filter the edges where either the source or the target are in group 2
+        const group2Edges = edges.filter(edge => nodeGroups.get(edge.source) === 2 || nodeGroups.get(edge.target) === 2);
+
+        // Get the edge values for group 2
+        const group2Values = group2Edges.map(edge => edge.value);
+
+        // Compute the maximum and minimum values for each group
+        const maxGroup1Value = Math.max(...group1Values);
+        const minGroup1Value = Math.min(...group1Values);
+        const maxGroup2Value = Math.max(...group2Values);
+        const minGroup2Value = Math.min(...group2Values);
+
 
         // Modify the linkColor scale
-        const linkColor = d3.scaleSequential(t => d3.interpolatePurples(0.3 + 0.7 * t)).domain([minWeight, maxWeight]);
+        const linkColorMain = d3.scaleSequential(t => d3.interpolateBlues(0.2 + 0.8 * t)).domain([minGroup1Value, maxGroup1Value]);
+        const linkColorSec = d3.scaleSequential(t => d3.interpolateOranges(0.2 + 0.8 * t)).domain([minGroup2Value, maxGroup2Value]);
 
 
         const simulation = d3.forceSimulation(nodes)
             .force("link", d3.forceLink(edges).id(d => d.id).distance(50))
-            .force("charge", d3.forceManyBody().strength(-1200))
-            .force("center", d3.forceCenter(width / 2, height / 2));
+            .force("charge", d3.forceManyBody().strength(-4200))
+            .force("center", d3.forceCenter(width / 3, height / 2));
 
-        const svg = d3.create("svg")
+        const svg = d3.select("#interaction").append("svg")
             //.attr("viewBox", [0, 0, width, height]);
             .attr("width", width)
             .attr("height", height)
+            .attr("class", "interaction-div")
 
 
         const edgeTooltip = svg.append("g")
             .attr("class", "edge-tooltip")
             .style("display", "none");
 
+        const xRect = width * 2 / 3
+
         edgeTooltip.append("rect")
             .attr("class", "edge-tooltip-rect")
-            .attr("width", 200)
-            .attr("height", 120)
+            .attr("width", width / 3)
+            .attr("height", height)
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
             .attr("rx", 5)
-            .attr("ry", 5);
+            .attr("ry", 5)
+            .attr("x", xRect)
 
         edgeTooltip.append("image")
-            .attr("x", 5)
-            .attr("y", 5)
-            .attr("width", 60)
-            .attr("height", 60)
+            .attr("x", xRect + 20)
+            .attr("y", 20)
+            .attr("width", 100)
+            .attr("height", 100)
             .attr("class", "image-1");
 
         edgeTooltip.append("image")
-            .attr("x", 135)
-            .attr("y", 5)
-            .attr("width", 60)
-            .attr("height", 60)
+            .attr("x", xRect + 400 - 20)
+            .attr("y", 20)
+            .attr("width", 100)
+            .attr("height", 100)
             .attr("class", "image-2");
 
         // Create the tooltip-like element
@@ -98,7 +120,6 @@ function startInteractions() {
 
         svg.on("click", function (event) {
             // Check if the event target is not a node
-            console.log(event.target.classList)
             if (
                 !event.target.classList.contains("node") &&
                 !(event.target.parentElement && event.target.parentElement.classList.contains("node")) &&
@@ -117,16 +138,26 @@ function startInteractions() {
             .selectAll("line")
             .data(edges)
             .join("line")
-            .attr("stroke-width", d => 8)
+            .attr("stroke-width", d => 18)
             .attr("class", "link")
-            .attr("stroke", d => linkColor(d.value))
+            .attr("stroke", d => {
+                if (d.source.group == 2 || d.target.group == 2) {
+                    return linkColorSec(d.value)
+                } else {
+                    return linkColorMain(d.value)
+                }
+            })
             .on("mouseover", function (event, d) {
                 // Change the stroke color to green on hover
                 d3.select(this).attr("stroke", "green");
             })
             .on("mouseout", function (event, d) {
                 // Reset the stroke color to its original value when the mouse leaves
-                d3.select(this).attr("stroke", linkColor(d.value));
+                if (d.source.group == 2 || d.target.group == 2) {
+                    d3.select(this).attr("stroke", linkColorSec(d.value));
+                } else {
+                    d3.select(this).attr("stroke", linkColorMain(d.value));
+                }
             })
             .on("click", function (event, d) {
                 // Hide the character tooltip
@@ -140,7 +171,6 @@ function startInteractions() {
 
                 // Clear previous text elements
                 edgeTooltip.selectAll("text").remove();
-                console.log(d)
 
                 // Add a single text element for the phrases
                 const phraseText = edgeTooltip.append("text")
@@ -161,35 +191,75 @@ function startInteractions() {
 
                 // Use d3.interval to update the displayed phrase every second
                 // Use d3.interval to update the displayed phrase every second
-                const interval = d3.interval(() => {
-                    // Fade out the current phrase
-                    phraseText.transition()
-                        .duration(500)
-                        .style("opacity", 0)
-                        .on("end", () => {
-                            // Increment the phrase index
-                            phraseIndex++;
 
-                            // If we've reached the end of the phrases, reset the index to 0
-                            if (phraseIndex >= d.phrases.length) {
-                                phraseIndex = 0;
-                            }
+                // Prepare the data for the word cloud
+                let words = d.phrases.map(word => ({ text: word[0], size: word[1] }));
 
-                            // Update the text with the current phrase
-                            //phraseText.text(d.phrases[phraseIndex].join(" "));
-                            phraseText.text("words/phrases exchange by them");
+                // Compute the domain of your size values
+                let sizeDomain = d3.extent(words, d => d.size);
 
-                            // Fade in the updated phrase
-                            phraseText.transition()
-                                .duration(500)
-                                .style("opacity", 1);
-                        });
-                }, 1000);
+                // Decide on your font size range
+                let fontSizeRange = [30, 60]; // Change this to fit your design
 
-                // Stop the interval when the edge tooltip is hidden
-                edgeTooltip.on("mouseleave", () => {
-                    interval.stop();
-                });
+                // Create a scale for the font sizes
+                let fontSizeScale = d3.scaleLinear()
+                    .domain(sizeDomain)
+                    .range(fontSizeRange);
+
+                words = words.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
+                console.log(words)
+
+                // Create a new layout instance
+                let layout = d3.layout.cloud()
+                    .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
+                    .words(words)
+                    .padding(5)
+                    .rotate(() => ~~(Math.random() * 2) * 90)
+                    .font("Impact")
+                    .fontSize(d => d.size) // Use the scale here
+                    .on("end", draw);
+
+                // Start the layout calculation
+                layout.start();
+
+                function draw(words) {
+                    edgeTooltip.append("g")
+                        .attr("transform", "translate(1250,340)") // Center the word cloud in the tooltip
+                        .selectAll("text")
+                        .data(words)
+                        .enter().append("text")
+                        .style("font-size", d => `${d.size}px`)
+                        .style("font-family", "Impact")
+                        .style("fill", (_d, i) => colorCloud(i))
+                        .attr("text-anchor", "middle")
+                        .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
+                        .text(d => d.text);
+                }
+
+
+                // Start of new bar chart code
+                const barChartData = [1, 2, 1, 2, 1, 2, 1, 2, 3, 1];
+                const barChartWidth = 300;
+                const barChartHeight = 100;
+                const barPadding = 1;
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, d3.max(barChartData)])
+                    .range([0, barChartHeight]);
+
+                const barChart = edgeTooltip.append("g")
+                    .attr("transform", `translate(${width * 2 / 3}, 700)`);  // move the g element
+
+                barChart.selectAll("rect")
+                    .data(barChartData)
+                    .enter()
+                    .append("rect")
+                    .attr("x", (d, i) => (i * (barChartWidth / barChartData.length)))
+                    .attr("y", d => barChartHeight - yScale(d))  // adjust y value
+                    .attr("width", barChartWidth / barChartData.length - barPadding)
+                    .attr("height", d => yScale(d))
+                    .attr("fill", "teal");
+
             });
 
 
@@ -216,7 +286,6 @@ function startInteractions() {
                 d3.select('.text-name').html(d.id);
                 d3.select('.text-user').html("User he likes to interact more with");
                 d3.select('.text-word').html("Favourite words/phrases to use");
-                console.log(d)
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
 
@@ -227,14 +296,14 @@ function startInteractions() {
             });
 
         node.append("circle") // Add a circle element to the 'g' element
-            .attr("r", 20) // Change the radius to 30
+            .attr("r", 40) // Change the radius to 30
             .attr("fill", d => color(d.group));
 
         node.append("image") // Add an image element to the 'g' element
-            .attr("x", -15) // Center the image horizontally
-            .attr("y", -15) // Center the image vertically
-            .attr("width", 30) // Set the image width
-            .attr("height", 30) // Set the image height
+            .attr("x", -35) // Center the image horizontally
+            .attr("y", -35) // Center the image vertically
+            .attr("width", 70) // Set the image width
+            .attr("height", 70) // Set the image height
             .attr("href", function (d) {
                 // Set the image source based on the character's name
                 const imageName = d.id.split(' ')[0].toLowerCase();
@@ -245,6 +314,11 @@ function startInteractions() {
             .text(d => d.name);
 
         simulation.on("tick", () => {
+            nodes.forEach(function (d) {
+                d.x = Math.max(40, Math.min(width - 40, d.x));
+                d.y = Math.max(40, Math.min(height - 40, d.y));
+            });
+
             link.attr("x1", d => d.source.x)
                 .attr("y1", d => d.source.y)
                 .attr("x2", d => d.target.x)
@@ -260,10 +334,12 @@ function startInteractions() {
                 event.subject.fy = event.subject.y;
             }
 
-            function dragged(event) {
-                event.subject.fx = event.x;
-                event.subject.fy = event.y;
+
+            function dragged(event, d) {
+                d.fx = Math.max(40, Math.min(width - 40, event.x));
+                d.fy = Math.max(40, Math.min(height - 40, event.y));
             }
+
 
             function dragended(event) {
                 if (!event.active) simulation.alphaTarget(0);
@@ -277,7 +353,6 @@ function startInteractions() {
                 .on("end", dragended);
         }
 
-        document.body.appendChild(svg.node());
     });
 
 
