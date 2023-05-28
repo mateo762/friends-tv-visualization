@@ -12,7 +12,22 @@
 <body>
     <div class="container">
         <div id="my_dataviz"></div>
-        <div id="interaction"></div>
+        <div id="interaction">
+            <div class="radio-container">
+                <input type="radio" id="season-interaction-1" name="season-interaction" value="season-interaction-1">
+                <label for="season-interaction-1">Season 1-3</label>
+
+                <input type="radio" id="season-interaction-4" name="season-interaction" value="season-interaction-4">
+                <label for="season-interaction-4">Season 4-7</label>
+
+                <input type="radio" id="season-interaction-8" name="season-interaction" value="season-interaction-8">
+                <label for="season-interaction-8">Season 8-10</label>
+                
+                <input type="radio" id="season-interaction-all" name="season-interaction" value="season-interaction-all" checked>
+                <label for="season-interaction-all">All seasons</label>
+            </div>
+            <svg id="interaction-svg"></svg>
+        </div>
     </div>
     <script src="interactions.js"></script>
     <script src="gossips.js"></script>
