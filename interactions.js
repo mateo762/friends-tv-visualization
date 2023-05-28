@@ -22,18 +22,20 @@ function startInteractions() {
         d3.select("#interaction-svg").html("")
 
         let link_csv;
+        let simulationStrength;
         if (checkedRadioTopicId == 'season-interaction-1') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_1_to_3.json"
+            simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-4') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_4_to_7.json"
+            simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-8') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_8_to_10.json"
+            simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-all') {
             link_csv = "https://mateo762.github.io/friends_data/interactions2.json"
+            simulationStrength = -2200
         }
-
-
-        console.log(checkedRadioTopicId, link_csv)
 
         d3.json(link_csv).then(function (graph) {
 
@@ -75,7 +77,7 @@ function startInteractions() {
 
             const simulation = d3.forceSimulation(nodes)
                 .force("link", d3.forceLink(edges).id(d => d.id).distance(50))
-                .force("charge", d3.forceManyBody().strength(-4200))
+                .force("charge", d3.forceManyBody().strength(simulationStrength))
                 .force("center", d3.forceCenter(width / 3, height / 2));
 
             const svg = d3.select("#interaction-svg")
@@ -116,38 +118,32 @@ function startInteractions() {
 
             // Create the tooltip-like element
             const tooltip = svg.append("g")
-                .attr("class", "tooltip")
+                .attr("class", "edge-tooltip")
                 .style("display", "none");
 
             tooltip.append("rect")
-                .attr("width", 300)
-                .attr("height", 80)
+                .attr("class", "edge-tooltip-rect")
+                .attr("width", width / 3)
+                .attr("height", height)
                 .attr("fill", "#ccc")
                 .attr("stroke", "#000")
                 .attr("rx", 5)
-                .attr("ry", 5);
+                .attr("ry", 5)
+                .attr("x", xRect)
 
             tooltip.append("image")
-                .attr("x", 5)
-                .attr("y", 5)
-                .attr("width", 40)
-                .attr("height", 40);
+                .attr("x", xRect + 180)
+                .attr("y", 20)
+                .attr("width", 130)
+                .attr("height", 130)
+                .attr("class", "image");
 
             tooltip.append("text")
                 .attr("class", "text-name")
-                .attr("x", 50)
-                .attr("y", 30)
-                .attr("font-size", "14px");
-            tooltip.append("text")
-                .attr("class", "text-user")
-                .attr("x", 50)
-                .attr("y", 50)
-                .attr("font-size", "14px");
-            tooltip.append("text")
-                .attr("class", "text-word")
-                .attr("x", 50)
-                .attr("y", 70)
-                .attr("font-size", "14px");
+                .attr("x", xRect + 180)
+                .attr("y", 200)
+                .attr("font-size", "22px");
+
 
 
             svg.on("click", function (event) {
@@ -246,7 +242,7 @@ function startInteractions() {
                         .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
                         .words(words)
                         .padding(5)
-                        .rotate(() => ~~(Math.random() * 2) * 90)
+                        .rotate(() => ~~(Math.random() * 2) * 30)
                         .font("Impact")
                         .fontSize(d => d.size) // Use the scale here
                         .on("end", draw);
@@ -300,7 +296,7 @@ function startInteractions() {
                 .attr('class', "g-nodes")
                 .attr("class", "nodes")
                 .selectAll("circle")
-                .data(graph.nodes)
+                .data(nodes)
                 .join("g") // Change this to 'g' instead of 'circle'
                 .attr("class", "node") // Add this line
                 .call(drag(simulation))
@@ -313,18 +309,59 @@ function startInteractions() {
                     d3.select(this).select("circle").attr("fill", color(d.group));
                 })
                 .on("click", function (event, d) {
+                    console.log(d)
+
+                    edgeTooltip.style("display", "none")
                     // Show the tooltip with character's name
                     tooltip.style("display", "block");
-                    d3.select('.text-name').html(d.id);
-                    d3.select('.text-user').html("User he likes to interact more with");
-                    d3.select('.text-word').html("Favourite words/phrases to use");
-                    // Set the image source based on the character's name
                     const imageName = d.id.split(' ')[0].toLowerCase();
-
                     tooltip.select("image").attr("href", `pictures/${imageName}.png`);
 
-                    // Position the tooltip based on the node's coordinates
-                    tooltip.attr("transform", `translate(${d.x + 10}, ${d.y - 25})`);
+                    tooltip.select(".text-name").html(d.id)
+
+
+                    // Prepare the data for the word cloud
+                    let words = d.words.map(word => ({ text: word[0], size: word[1] }));
+
+                    // Compute the domain of your size values
+                    let sizeDomain = d3.extent(words, d => d.size);
+
+                    // Decide on your font size range
+                    let fontSizeRange = [30, 60]; // Change this to fit your design
+
+                    // Create a scale for the font sizes
+                    let fontSizeScale = d3.scaleLinear()
+                        .domain(sizeDomain)
+                        .range(fontSizeRange);
+
+                    words = words.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
+
+                    // Create a new layout instance
+                    let layout = d3.layout.cloud()
+                        .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
+                        .words(words)
+                        .padding(5)
+                        .rotate(() => ~~(Math.random() * 2) * 30)
+                        .font("Impact")
+                        .fontSize(d => d.size) // Use the scale here
+                        .on("end", draw);
+
+                    // Start the layout calculation
+                    layout.start();
+
+                    function draw(words) {
+                        tooltip.append("g")
+                            .attr("transform", "translate(1250,340)") // Center the word cloud in the tooltip
+                            .selectAll("text")
+                            .data(words)
+                            .enter().append("text")
+                            .style("font-size", d => `${d.size}px`)
+                            .style("font-family", "Impact")
+                            .style("fill", (_d, i) => colorCloud(i))
+                            .attr("text-anchor", "middle")
+                            .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
+                            .text(d => d.text);
+                    }
                 });
 
             node.append("circle") // Add a circle element to the 'g' element
