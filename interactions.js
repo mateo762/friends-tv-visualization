@@ -132,7 +132,7 @@ function startInteractions() {
                 .attr("x", xRect)
 
             tooltip.append("image")
-                .attr("x", xRect + 180)
+                .attr("x", xRect + 60)
                 .attr("y", 20)
                 .attr("width", 130)
                 .attr("height", 130)
@@ -140,11 +140,48 @@ function startInteractions() {
 
             tooltip.append("text")
                 .attr("class", "text-name")
-                .attr("x", xRect + 180)
+                .attr("x", xRect + (width / 12))
                 .attr("y", 200)
-                .attr("font-size", "22px");
+                .attr("font-size", "22px")
+                .style("font-weight", "bold")
+                .attr("text-anchor", "middle");
+
+            tooltip.append("text")
+                .attr("class", "text-description")
+                .attr("y", 40)
+                .attr("font-size", "22px")
+                .attr("text-anchor", "middle");
 
 
+
+            tooltip.append("image")
+                .attr("x", xRect + 190 - 150)
+                .attr("y", 600)
+                .attr("width", 100)
+                .attr("height", 100)
+                .attr("class", "image-gossip image-gossip-1");
+
+
+            tooltip.append("image")
+                .attr("x", xRect + 190)
+                .attr("y", 600)
+                .attr("width", 100)
+                .attr("height", 100)
+                .attr("class", "image-gossip image-gossip-2");
+
+            tooltip.append("image")
+                .attr("x", xRect + 190 + 150)
+                .attr("y", 600)
+                .attr("width", 100)
+                .attr("height", 100)
+                .attr("class", "image-gossip image-gossip-3");
+
+            tooltip.append("text")
+                .attr("class", "text-gossip")
+                .attr("x", xRect + width / 6)
+                .attr("y", 560)
+                .attr("font-size", "22px")
+                .attr("text-anchor", "middle")
 
             svg.on("click", function (event) {
                 // Check if the event target is not a node
@@ -227,7 +264,7 @@ function startInteractions() {
                     let sizeDomain = d3.extent(words, d => d.size);
 
                     // Decide on your font size range
-                    let fontSizeRange = [30, 60]; // Change this to fit your design
+                    let fontSizeRange = [20, 30]; // Change this to fit your design
 
                     // Create a scale for the font sizes
                     let fontSizeScale = d3.scaleLinear()
@@ -242,7 +279,7 @@ function startInteractions() {
                         .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
                         .words(words)
                         .padding(5)
-                        .rotate(() => ~~(Math.random() * 2) * 30)
+                        .rotate(() => ~~(Math.random() * 2) * 0)
                         .font("Impact")
                         .fontSize(d => d.size) // Use the scale here
                         .on("end", draw);
@@ -314,10 +351,34 @@ function startInteractions() {
                     edgeTooltip.style("display", "none")
                     // Show the tooltip with character's name
                     tooltip.style("display", "block");
-                    const imageName = d.id.split(' ')[0].toLowerCase();
+
+                    tooltip.selectAll("text").html("")
+                    tooltip.selectAll(".image-gossip").attr("href", "")
+
+                    const characterName = d.id.split(' ')[0]
+                    const imageName = characterName.toLowerCase();
                     tooltip.select("image").attr("href", `pictures/${imageName}.png`);
 
                     tooltip.select(".text-name").html(d.id)
+
+                    let descriptionLines = wordWrap(d.description, 25);  // 50 characters per line
+
+                    tooltip.select(".text-description").selectAll("tspan")
+                        .data(descriptionLines)
+                        .enter()
+                        .append("tspan")
+                        .text(d => d)
+                        .attr("x", xRect + 350)
+                        .attr('dy', (_d, i) => `1em`);  // '1em' means the height of the text in this case
+
+
+                    tooltip.select(".text-gossip")
+                        .html(`Who does <tspan style="font-weight:bold">${characterName}</tspan> gossip about?`);
+
+                    d.gossips.forEach((character, index) => {
+                        let gossipName = character[0].split(' ')[0]
+                        tooltip.select(`.image-gossip-${index + 1}`).attr("href", `pictures/${gossipName}.png`)
+                    })
 
 
                     // Prepare the data for the word cloud
@@ -327,7 +388,7 @@ function startInteractions() {
                     let sizeDomain = d3.extent(words, d => d.size);
 
                     // Decide on your font size range
-                    let fontSizeRange = [30, 60]; // Change this to fit your design
+                    let fontSizeRange = [20, 30]; // Change this to fit your design
 
                     // Create a scale for the font sizes
                     let fontSizeScale = d3.scaleLinear()
@@ -338,10 +399,10 @@ function startInteractions() {
 
                     // Create a new layout instance
                     let layout = d3.layout.cloud()
-                        .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
+                        .size([500, 300]) // Set the size of the word cloud to the same size as your tooltip
                         .words(words)
                         .padding(5)
-                        .rotate(() => ~~(Math.random() * 2) * 30)
+                        .rotate(() => ~~(Math.random() * 2) * 0)
                         .font("Impact")
                         .fontSize(d => d.size) // Use the scale here
                         .on("end", draw);
@@ -351,7 +412,7 @@ function startInteractions() {
 
                     function draw(words) {
                         tooltip.append("g")
-                            .attr("transform", "translate(1250,340)") // Center the word cloud in the tooltip
+                            .attr("transform", "translate(1250,380)") // Center the word cloud in the tooltip
                             .selectAll("text")
                             .data(words)
                             .enter().append("text")
@@ -423,6 +484,24 @@ function startInteractions() {
             }
 
         });
+    }
+
+    function wordWrap(str, maxLength) {
+        const words = str.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if (currentLine.length + words[i].length >= maxLength) {
+                lines.push(currentLine);
+                currentLine = words[i];
+            } else {
+                currentLine += ' ' + words[i];
+            }
+        }
+        lines.push(currentLine);  // push the last line
+
+        return lines;
     }
 
     changeGraph("season-interaction-all")
