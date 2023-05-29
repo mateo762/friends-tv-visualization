@@ -109,12 +109,29 @@ function startInteractions() {
                 .attr("height", 100)
                 .attr("class", "image-1");
 
+            edgeTooltip.append("text")
+                .attr("x", xRect + (width / 12))
+                .attr("y", 200)
+                .attr("font-size", "22px")
+                .style("font-weight", "bold")
+                .attr("text-anchor", "middle")
+                .attr("class", "text-name-1")
+
             edgeTooltip.append("image")
                 .attr("x", xRect + 400 - 20)
                 .attr("y", 20)
                 .attr("width", 100)
                 .attr("height", 100)
                 .attr("class", "image-2");
+
+            edgeTooltip.append("text")
+                .attr("class", "text-name-2")
+                .attr("x", xRect + (width / 3))
+                .attr("y", 200)
+                .attr("font-size", "22px")
+                .style("font-weight", "bold")
+                .attr("text-anchor", "middle")
+                .attr("class", "text-name-2")
 
             // Create the tooltip-like element
             const tooltip = svg.append("g")
@@ -235,7 +252,9 @@ function startInteractions() {
                     edgeTooltip.style("display", "block")
 
                     // Clear previous text elements
-                    edgeTooltip.selectAll("text").remove();
+                    edgeTooltip.selectAll("text").html("")
+
+                    d3.select(".bar-chart").remove()
 
                     // Add a single text element for the phrases
                     const phraseText = edgeTooltip.append("text")
@@ -249,6 +268,9 @@ function startInteractions() {
                     const imageName2 = d.target.id.split(' ')[0].toLowerCase();
                     edgeTooltip.select('.image-1').attr("href", `pictures/${imageName1}.png`)
                     edgeTooltip.select('.image-2').attr("href", `pictures/${imageName2}.png`)
+
+                    d3.select('.text-name-1').html(d.source.id.split(' ')[0])
+                    d3.select('.text-name-2').html(d.target.id.split(' ')[0])
 
 
                     // Create a variable to keep track of the current phrase index
@@ -303,7 +325,8 @@ function startInteractions() {
 
 
                     // Start of new bar chart code
-                    const barChartData = [1, 2, 1, 2, 1, 2, 1, 2, 3, 1];
+                    const barChartData = d.number_words;
+                    console.log(d)
                     const barChartWidth = 300;
                     const barChartHeight = 100;
                     const barPadding = 1;
@@ -313,17 +336,24 @@ function startInteractions() {
                         .range([0, barChartHeight]);
 
                     const barChart = edgeTooltip.append("g")
+                        .attr("class", "bar-chart")
                         .attr("transform", `translate(${width * 2 / 3}, 700)`);  // move the g element
 
                     barChart.selectAll("rect")
                         .data(barChartData)
                         .enter()
                         .append("rect")
-                        .attr("x", (d, i) => (i * (barChartWidth / barChartData.length)))
-                        .attr("y", d => barChartHeight - yScale(d))  // adjust y value
+                        .attr("x", (d, i) => 100 + (i * (barChartWidth / barChartData.length)))
+                        .attr("y", d => barChartHeight - yScale(d) - 100)  // adjust y value
                         .attr("width", barChartWidth / barChartData.length - barPadding)
                         .attr("height", d => yScale(d))
-                        .attr("fill", "teal");
+                        .attr("fill", (_d, i) => {
+                            if (i == 0) {
+                                return "blue"
+                            } else {
+                                return "red"
+                            }
+                        });
 
                 });
 
