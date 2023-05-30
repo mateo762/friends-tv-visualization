@@ -84,7 +84,7 @@ function startEmotions() {
     
     
     
-    const width = 0.75*visualViewport.width;
+    const width = 1150 //0.75*visualViewport.width;
     const height = 600;
     const padding = 35;
     const legendWidth = 350; // Set the width for the legend
