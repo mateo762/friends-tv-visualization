@@ -72,12 +72,23 @@ body {
     /* Center child elements horizontally */
     justify-content: center;
     /* Center child elements vertically */
+    margin-bottom: 100px;
 }
 
 
 .interaction-div {
     background-color: #f9f9f9;
 }
+
+#interaction{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.radio-container{
+    margin-bottom: 20px;
+}
+
 
 
 /* Radio button container and labels */
