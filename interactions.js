@@ -33,7 +33,7 @@ function startInteractions() {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_8_to_10.json"
             simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-all') {
-            link_csv = "https://mateo762.github.io/friends_data/interactions2.json"
+            link_csv = "https://mateo762.github.io/friends_data/interactions_all.json"
             simulationStrength = -2200
         }
 
@@ -103,14 +103,14 @@ function startInteractions() {
                 .attr("x", xRect)
 
             edgeTooltip.append("image")
-                .attr("x", xRect + 20)
+                .attr("x", xRect + 60)
                 .attr("y", 20)
-                .attr("width", 100)
-                .attr("height", 100)
+                .attr("width", 130)
+                .attr("height", 130)
                 .attr("class", "image-1");
 
             edgeTooltip.append("text")
-                .attr("x", xRect + (width / 12))
+                .attr("x", xRect + width / 12)
                 .attr("y", 200)
                 .attr("font-size", "22px")
                 .style("font-weight", "bold")
@@ -118,20 +118,28 @@ function startInteractions() {
                 .attr("class", "text-name-1")
 
             edgeTooltip.append("image")
-                .attr("x", xRect + 400 - 20)
+                .attr("x", xRect + 400 - 100)
                 .attr("y", 20)
-                .attr("width", 100)
-                .attr("height", 100)
+                .attr("width", 130)
+                .attr("height", 130)
                 .attr("class", "image-2");
 
             edgeTooltip.append("text")
                 .attr("class", "text-name-2")
-                .attr("x", xRect + (width / 3))
+                .attr("x", xRect + 365)
                 .attr("y", 200)
                 .attr("font-size", "22px")
                 .style("font-weight", "bold")
                 .attr("text-anchor", "middle")
-                .attr("class", "text-name-2")
+
+            
+            edgeTooltip.append("text")
+                .attr("class", "text-words")
+                .attr("x", xRect + width/6)
+                .attr("y", 600)
+                .attr("font-size", "22px")
+                .style("font-weight", "bold")
+                .attr("text-anchor", "middle")
 
             // Create the tooltip-like element
             const tooltip = svg.append("g")
@@ -271,6 +279,7 @@ function startInteractions() {
 
                     d3.select('.text-name-1').html(d.source.id.split(' ')[0])
                     d3.select('.text-name-2').html(d.target.id.split(' ')[0])
+                    d3.select('.text-words').html("Who says the most words?")
 
 
                     // Create a variable to keep track of the current phrase index
@@ -298,7 +307,7 @@ function startInteractions() {
 
                     // Create a new layout instance
                     let layout = d3.layout.cloud()
-                        .size([500, 400]) // Set the size of the word cloud to the same size as your tooltip
+                        .size([500, 300]) // Set the size of the word cloud to the same size as your tooltip
                         .words(words)
                         .padding(5)
                         .rotate(() => ~~(Math.random() * 2) * 0)
@@ -311,7 +320,7 @@ function startInteractions() {
 
                     function draw(words) {
                         edgeTooltip.append("g")
-                            .attr("transform", "translate(1250,340)") // Center the word cloud in the tooltip
+                            .attr("transform", "translate(1250,380)") // Center the word cloud in the tooltip
                             .selectAll("text")
                             .data(words)
                             .enter().append("text")
@@ -327,34 +336,62 @@ function startInteractions() {
                     // Start of new bar chart code
                     const barChartData = d.number_words;
                     console.log(d)
+                    const barChartHeight = 80;
                     const barChartWidth = 300;
-                    const barChartHeight = 100;
-                    const barPadding = 1;
-
-                    const yScale = d3.scaleLinear()
-                        .domain([0, d3.max(barChartData)])
-                        .range([0, barChartHeight]);
 
                     const barChart = edgeTooltip.append("g")
                         .attr("class", "bar-chart")
-                        .attr("transform", `translate(${width * 2 / 3}, 700)`);  // move the g element
+                        .attr("transform", `translate(${width * 2 / 3}, 650)`);  // move the g element
 
+                    let cumValue = 0;
+
+                    // Initial creation of bars
                     barChart.selectAll("rect")
                         .data(barChartData)
                         .enter()
                         .append("rect")
-                        .attr("x", (d, i) => 100 + (i * (barChartWidth / barChartData.length)))
-                        .attr("y", d => barChartHeight - yScale(d) - 100)  // adjust y value
-                        .attr("width", barChartWidth / barChartData.length - barPadding)
-                        .attr("height", d => yScale(d))
-                        .attr("fill", (_d, i) => {
-                            if (i == 0) {
-                                return "blue"
-                            } else {
-                                return "red"
-                            }
-                        });
+                        .attr("y", 0)
+                        .attr("x", 200)
+                        .attr("height", barChartHeight)
+                        .attr("fill", (_d, i) => i == 0 ? "#7ECCC3" : "#CC7E87");
 
+                    // Initial creation of text
+                    barChart.selectAll("text")
+                        .data(barChartData)
+                        .enter()
+                        .append("text")
+                        .text(d => d)
+                        .attr("y", barChartHeight / 2 + 5)
+                        .attr("x", (d, i) => {
+                            let result = 100 + (barChartWidth * (cumValue + d / 2) / d3.sum(barChartData));
+                            cumValue += d;
+                            return result;
+                        })
+                        .attr("opacity", "0")
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "18px")
+                        .attr("fill", "black")
+                        .attr("text-anchor", "middle");
+
+
+                    cumValue = 0;
+
+                    // Update bars and text on click
+                    barChart.selectAll("rect")
+                        .data(barChartData)
+                        .transition()  // Start a transition
+                        .duration(1000)  // Set its duration to 1000 milliseconds
+                        .attr("x", d => { let result = cumValue; cumValue += d; return 100 + (barChartWidth * result / d3.sum(barChartData)); })
+                        .attr("width", d => barChartWidth * d / d3.sum(barChartData));
+
+                    // Reset cumValue for text
+
+                    barChart.selectAll("text")
+                        .data(barChartData)
+                        .transition()  // Start a transition
+                        .duration(500)  // Set its duration to 1000 milliseconds
+                        .delay(1000)
+                        .attr("opacity", "1")
                 });
 
 
