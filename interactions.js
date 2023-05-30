@@ -443,7 +443,7 @@ function startInteractions() {
                         .html(`Who does <tspan style="font-weight:bold">${characterName}</tspan> gossip about?`);
 
                     d.gossips.forEach((character, index) => {
-                        let gossipName = character[0].split(' ')[0]
+                        let gossipName = character[0].split(' ')[0].toLowerCase()
                         tooltip.select(`.image-gossip-${index + 1}`).attr("href", `./pictures/${gossipName}.png`)
                     })
 

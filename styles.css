@@ -1,3 +1,14 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f8f8;
+    padding: 0;
+    margin: 0;
+}
+
+
 .links line {
     stroke-opacity: 0.6;
 }
@@ -151,6 +162,7 @@
     background-color: #ffffff;
     border-color: #ffffff;
 }
+
 .tooltip {
     position: absolute;
     text-align: center;
@@ -161,4 +173,4 @@
     border: 1px solid #ddd;
     border-radius: 3px;
     pointer-events: none;
-  }
+}
