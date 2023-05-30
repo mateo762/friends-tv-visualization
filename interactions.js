@@ -274,8 +274,8 @@ function startInteractions() {
 
                     const imageName1 = d.source.id.split(' ')[0].toLowerCase();
                     const imageName2 = d.target.id.split(' ')[0].toLowerCase();
-                    edgeTooltip.select('.image-1').attr("href", `pictures/${imageName1}.png`)
-                    edgeTooltip.select('.image-2').attr("href", `pictures/${imageName2}.png`)
+                    edgeTooltip.select('.image-1').attr("href", `./pictures/${imageName1}.png`)
+                    edgeTooltip.select('.image-2').attr("href", `./pictures/${imageName2}.png`)
 
                     d3.select('.text-name-1').html(d.source.id.split(' ')[0])
                     d3.select('.text-name-2').html(d.target.id.split(' ')[0])
@@ -424,7 +424,7 @@ function startInteractions() {
 
                     const characterName = d.id.split(' ')[0]
                     const imageName = characterName.toLowerCase();
-                    tooltip.select("image").attr("href", `pictures/${imageName}.png`);
+                    tooltip.select("image").attr("href", `./pictures/${imageName}.png`);
 
                     tooltip.select(".text-name").html(d.id)
 
@@ -444,7 +444,7 @@ function startInteractions() {
 
                     d.gossips.forEach((character, index) => {
                         let gossipName = character[0].split(' ')[0]
-                        tooltip.select(`.image-gossip-${index + 1}`).attr("href", `pictures/${gossipName}.png`)
+                        tooltip.select(`.image-gossip-${index + 1}`).attr("href", `./pictures/${gossipName}.png`)
                     })
 
 
@@ -504,7 +504,7 @@ function startInteractions() {
                 .attr("href", function (d) {
                     // Set the image source based on the character's name
                     const imageName = d.id.split(' ')[0].toLowerCase();
-                    return `pictures/${imageName}.png`;
+                    return `./pictures/${imageName}.png`;
                 }); // Set the image source
 
             node.append("title")
