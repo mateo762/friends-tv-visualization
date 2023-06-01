@@ -1,6 +1,10 @@
 function startAppearances() {
     let selectedName = ''
 
+    function stringSeason(season) {
+        return `s${season<10?`0${season}`:season}`
+    }
+
     function updateScatterplot(scatterplotSvg,data,name,max,season) {
         // Clear the scatterplot
         scatterplotSvg.selectAll("*").remove();
@@ -9,7 +13,7 @@ function startAppearances() {
         const countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
 
 
-        let countArrayDataFiltered = season===undefined ? countArrayData : countArrayData.filter((name) => name.name.startsWith(`s${season<10?`0${season}`:season}`))
+        let countArrayDataFiltered = season=='all' ? countArrayData : countArrayData.filter((name) => name.name.startsWith(stringSeason(season)))
         countArrayDataFilteredSplit = []
         countArrayDataFiltered.forEach((object) => {
             val = {}
@@ -87,12 +91,22 @@ function startAppearances() {
         })
     }).then(function (){
         d3.json(link("character_appearances")).then(function (apperancesData) {
-            function histogram(svg,data,perCharacter=false,name,season) {
+            function histogram(svg,data,season,perCharacter=false,name) {
                 
+                season = season=='all'?season:stringSeason(season)
                 /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
                 if (perCharacter == true) {
-                    data = data[name]
+                    data = data[name][season]
+                } else {
+                    let dataCopy = {}
+                    keys = Object.keys(data)
+                    for(let i = 0; i < keys.length;i++) {
+                        name = keys[i]
+                        dataCopy[name] = data[name][season]
+                    }
+                    data = dataCopy
                 }
+                console.log(data)
                 // First, we convert the data to an array such that each index corresponds to a character and its appearances' count
                 const dataArray = Object.entries(data).map(([name, count]) => ({ name, count }));
                 
@@ -162,33 +176,48 @@ function startAppearances() {
             let wordsScatterplotSvg = createSvg()
             let wordsUsagesHistogramSvg = createSvg()
 
+            // function seasonOrAll(season){
+            //     return season==undefined?'all':season
+            // }
 
             function updateGraphs(season) {
-                updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season)
-                updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season)
-                histogram(wordsUsagesHistogramSvg,wordsUsagesCountData,true,selectedName,season)
+                const bars = histogram(histogramSvg,apperancesData,season)
+                bars.on("click", function (d) {
+                    selectedName = this.__data__.name
+                    updateGraphs(getSelectedSeason())
+                });
+    
+                if(selectedName!='') {
+                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season)
+                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season)
+                    histogram(wordsUsagesHistogramSvg,wordsUsagesCountData,season,true,selectedName)
+                }
             }
 
             function getSeasonOfInput(input) {
                 if (input.getAttribute('id') == "all-season-appearances") {
-                    return undefined
+                    return 'all'
                 } else {
                     return input.getAttribute('id').split('-')[2]
                 }
             }
 
-            const bars = histogram(histogramSvg,apperancesData)
+            function getSelectedSeason() {
+                return getSeasonOfInput(document.querySelector('#last-viz > .radio-container > input[name="season-appearances"]:checked'))
+            }
+
+            const bars = histogram(histogramSvg,apperancesData,getSelectedSeason())
             // Add event listener to the bars
             bars.on("click", function (d) {
                 selectedName = this.__data__.name
-                let selectedSeason = document.querySelector('#last-viz > .radio-container > input[name="season-appearances"]:checked')
-                updateGraphs(getSeasonOfInput(selectedSeason))
+                updateGraphs(getSelectedSeason())
             });
 
             let inputs = document.querySelectorAll('#last-viz > .radio-container > [name="season-appearances"]')
             inputs.forEach((input) => {
-                input.addEventListener('change', function(d) {
-                    if(selectedName!='') {
+                input.addEventListener('change', function(e) {
+                    // if this radio button is checked
+                    if (e.target.checked) {
                         updateGraphs(getSeasonOfInput(input))
                     }
                 })
