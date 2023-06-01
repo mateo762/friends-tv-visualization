@@ -76,7 +76,7 @@ function startAppearances() {
     
 
     d3.json(link("character_appearances")).then(function (apperancesData) {
-        function histogram(data,perCharacter=false,name) {
+        function histogram(svg,data,perCharacter=false,name) {
             
             /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
             mainCharacters = Object.keys(data)
@@ -87,16 +87,7 @@ function startAppearances() {
             const dataArray = Object.entries(data).map(([name, count]) => ({ name, count }));
             
             /* 1. Set up phase */
-            // We select the div with id=last_viz and append to it the svg that will contain the histogram
-            let svg = d3.select("#last_viz")
-                .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-
-            // We create a group element within the SVG and translate it to account for the margins
-            const chart = svg
-                .append("g")
-                .attr("transform", `translate(${margin.left}, ${margin.top})`);
+            svg.selectAll("*").remove();
 
             /* 2. Define the scales */
             // Create the x scale
@@ -114,7 +105,7 @@ function startAppearances() {
 
             /* 3. Content addition */
             // We create the bars and add them to our chart
-            const bars = chart
+            const bars = svg
                 .selectAll(".bar")
                 .data(dataArray)
                 .enter()
@@ -129,7 +120,7 @@ function startAppearances() {
             /* 4. Define the axes */
             // Create the x axis
             const xAxis = d3.axisBottom(xHistogramScale);
-            chart
+            svg
                 .append("g")
                 .attr("class", "x-axis")
                 .attr("transform", `translate(0, ${height})`)
@@ -137,23 +128,16 @@ function startAppearances() {
 
             // Create the y axis
             const yAxis = d3.axisLeft(yHistogramScale);
-            chart
+            svg
                 .append("g")
                 .attr("class", "y-axis")
                 .call(yAxis);
             return bars
         }
-        const bars = histogram(apperancesData)
-        // Add event listener to the bars
-        bars.on("click", function (d) {
-            // updateLinesScatterplot(this.__data__.name);
-            updateScatterplot(linesScatterplotSvg, linesCountData, this.__data__.name,30)
-            updateScatterplot(wordsScatterplotSvg, wordsCountData, this.__data__.name,200)
-            histogram(wordsUsagesCountData,true,this.__data__.name)
-        });
 
         function createSvg(){
             // Create the SVG element
+            // We select the div with id=last_viz and append to it the svg that will contain the viz (plot or histogram)
             return d3.select("#last_viz")
             .append("svg")
             .attr("width", width + margin.left + margin.right)
@@ -163,10 +147,20 @@ function startAppearances() {
         }
 
         // Create the SVG elements for the scatterplots and histogram
+        let histogramSvg = createSvg()
         let linesScatterplotSvg = createSvg()
         let wordsScatterplotSvg = createSvg()
+        let wordsUsagesHistogramSvg = createSvg()
 
 
+        const bars = histogram(histogramSvg,apperancesData)
+        // Add event listener to the bars
+        bars.on("click", function (d) {
+            // updateLinesScatterplot(this.__data__.name);
+            updateScatterplot(linesScatterplotSvg, linesCountData, this.__data__.name,30)
+            updateScatterplot(wordsScatterplotSvg, wordsCountData, this.__data__.name,200)
+            histogram(wordsUsagesHistogramSvg,wordsUsagesCountData,true,this.__data__.name)
+        });
     }).then(function (){
         d3.json(link("lines_counts")).then(function (linesData) {
             linesCountData = linesData
