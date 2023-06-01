@@ -25,12 +25,12 @@ function startInteractions() {
         let simulationStrength;
         if (checkedRadioTopicId == 'season-interaction-1') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_1_to_3.json"
-            simulationStrength = -4400
-        } else if (checkedRadioTopicId == 'season-interaction-4') {
+            simulationStrength = -4400                                                    
+        } else if (checkedRadioTopicId == 'season-interaction-4') {                       
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_4_to_7.json"
-            simulationStrength = -4400
-        } else if (checkedRadioTopicId == 'season-interaction-8') {
-            link_csv = "https://mateo762.github.io/friends_data/interactions_season_8_to_10.json"
+            simulationStrength = -4400                                                    
+        } else if (checkedRadioTopicId == 'season-interaction-8') {                       
+            link_csv = "https://mateo762.github.io/friends_data/interactions_season_8_to_10.json";
             simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-all') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_all.json"
