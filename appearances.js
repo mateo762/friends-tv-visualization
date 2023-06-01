@@ -106,7 +106,6 @@ function startAppearances() {
                     }
                     data = dataCopy
                 }
-                console.log(data)
                 // First, we convert the data to an array such that each index corresponds to a character and its appearances' count
                 const dataArray = Object.entries(data).map(([name, count]) => ({ name, count }));
                 
@@ -190,7 +189,7 @@ function startAppearances() {
                 if(selectedName!='') {
                     updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season)
                     updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season)
-                    histogram(wordsUsagesHistogramSvg,wordsUsagesCountData,season,true,selectedName)
+                    histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, true, selectedName)
                 }
             }
 
