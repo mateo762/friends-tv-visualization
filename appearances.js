@@ -1,15 +1,83 @@
 function startAppearances() {
 
+    function updateScatterplot(scatterplotSvg,data,name,max) {
+        // Clear the scatterplot
+        scatterplotSvg.selectAll("*").remove();
+
+        // Transform the data for the selected character into an array
+        const countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
+
+
+        let countArrayDataSeason1 = countArrayData.filter((name) => name.name.startsWith('s01'));
+        countArrayDataSeason1Split = []
+        countArrayDataSeason1.forEach((object) => {
+            val = {}
+            val.count = object.count
+            let splittedName = object.name.split('_')
+            splittedName = splittedName.reduce((accumulator, current, currentIndex) => {
+                if (currentIndex != 0 && currentIndex != 3) {
+                    return accumulator + current;
+                }
+                return accumulator
+            }, '');  
+            val.name = splittedName
+            countArrayDataSeason1Split.push(val)
+        });
+
+        console.log(countArrayDataSeason1Split)
+        // Create the x scale
+        const xScatterplotScale = d3
+        .scaleBand()
+        .domain(countArrayDataSeason1Split.map(d => d.name))
+        .range([0, width])
+        .padding(0.1);
+
+        // Create the y scale
+        const yScatterplotScale = d3
+        .scaleLinear()
+        // .domain([0, d3.max(countArrayDataSeason1Split, d => d.count)])
+        .domain([0,max]) // There, rather than adjusting the domain for each character, we set it such that it's fix for each of them
+        .range([height, 0]);
+
+        // Create the circles for the scatterplot
+        scatterplotSvg.selectAll(".circle")
+            .data(countArrayDataSeason1Split)
+            .enter()
+            .append("circle")
+            .attr("class", "circle")
+            .attr("cx", function (d) { return xScatterplotScale(d.name); })
+            .attr("cy", function (d) { return yScatterplotScale(d.count); })
+            .attr("r", 5);
+
+        // Add the x-axis for the scatterplot
+        scatterplotSvg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(xScatterplotScale))
+            .selectAll("text")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+
+        // Add the y-axis for the scatterplot
+        scatterplotSvg.append("g")
+            .call(d3.axisLeft(yScatterplotScale));
+    }
+
     function link(name) {
         return `https://enrico-benedettini.github.io/friends_data/${name}.json`
     }
 
     let mainCharacters = []
+    let linesCountData = []
+    let wordsCountData = []
+    let wordsUsagesCountData = []
     let margin = {top: 10, right: 30, bottom: 30, left: 60};
     const width = 800 - margin.left - margin.right;
-    const height = 800 - margin.top - margin.bottom;
+    const height = 600 - margin.top - margin.bottom;
+
+    
 
     d3.json(link("character_appearances")).then(function (apperancesData) {
+        /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
         mainCharacters = Object.keys(apperancesData)
         // First, we convert the data to an array such that each index corresponds to a character and its appearances' count
         const dataArray = Object.entries(apperancesData).map(([name, count]) => ({ name, count }));
@@ -28,34 +96,35 @@ function startAppearances() {
 
         /* 2. Define the scales */
         // Create the x scale
-        const x = d3
+        const xHistogramScale = d3
         .scaleBand()
         .domain(dataArray.map(d => d.name))
         .range([0, width])
         .padding(0.1);
 
         // Create the y scale
-        const y = d3
+        const yHistogramScale = d3
         .scaleLinear()
         .domain([0, d3.max(dataArray, d => d.count)])
         .range([height, 0]);
 
         /* 3. Content addition */
         // We create the bars and add them to our chart
-        chart
+        const bars = chart
             .selectAll(".bar")
             .data(dataArray)
             .enter()
             .append("rect")
+			.style("fill", "blue")
             .attr("class", "bar")
-            .attr("x", d => x(d.name))
-            .attr("y", d => y(d.count))
-            .attr("width", x.bandwidth())
-            .attr("height", d => height - y(d.count));
+            .attr("x", d => xHistogramScale(d.name))
+            .attr("y", d => yHistogramScale(d.count))
+            .attr("width", xHistogramScale.bandwidth())
+            .attr("height", d => height - yHistogramScale(d.count));
         
         /* 4. Define the axes */
         // Create the x axis
-        const xAxis = d3.axisBottom(x);
+        const xAxis = d3.axisBottom(xHistogramScale);
         chart
             .append("g")
             .attr("class", "x-axis")
@@ -63,39 +132,47 @@ function startAppearances() {
             .call(xAxis);
 
         // Create the y axis
-        const yAxis = d3.axisLeft(y);
+        const yAxis = d3.axisLeft(yHistogramScale);
         chart
             .append("g")
             .attr("class", "y-axis")
             .call(yAxis);
+
+        // Add event listener to the bars
+        bars.on("click", function (d) {
+            // updateLinesScatterplot(this.__data__.name);
+            updateScatterplot(linesScatterplotSvg, linesCountData, this.__data__.name,30)
+            updateScatterplot(wordsScatterplotSvg, wordsCountData, this.__data__.name,200)
+        });
+
+        function createSvg(){
+            // Create the SVG element
+            return d3.select("#last_viz")
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        }
+
+        // Create the SVG elements for the scatterplots and histogram
+        let linesScatterplotSvg = createSvg()
+        let wordsScatterplotSvg = createSvg()
+        let wordsUsagesHistogramSvg = createSvg()
+
+
     }).then(function (){
-
         d3.json(link("lines_counts")).then(function (linesData) {
-            console.log(`linesData = ${linesData}`)
-            console.log(linesData[mainCharacters[0]])
-
-
-            // let svg = d3.select("#my_dataviz")
-            //     .append("svg")
-            //     .attr("width", width + margin.left + margin.right)
-            //     .attr("height", height + margin.top + margin.bottom)
-            
-            // svg.selectAll("circle")
-            // .data(linesData)
-            // .enter()
-            // .append("circle")
-            // .style("fill","red")
-            // .attr("cx", function(d) { return x(d.x); })
-            // .attr("cy", function(d) { return y(d.y); })
-            // .attr("r", 1);
+            linesCountData = linesData
         })
     }).then(function (){
         d3.json(link("words_per_line")).then(function (words_data) {
-            console.log(words_data)
+            wordsCountData = words_data
         })
     }).then(function (){
         d3.json(link("words_usages")).then(function (usages_data) {
-            console.log(usages_data)
+            // console.log(usages_data)
+            wordsUsagesCountData = usages_data
         })
     })
 }
