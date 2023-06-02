@@ -27,47 +27,32 @@ function startEmotions() {
     "https://mateo762.github.io/friends_data/emotions_s4.json",
     "https://mateo762.github.io/friends_data/emotions_all.json"]
     
-    d3.json("https://mateo762.github.io/friends_data/emotions_s1.json").then(function (emotion_data) {
-    season_1_data = emotion_data
-    console.log("loaded data for season 1")
-    
+    d3.json(data_urls[4]).then(function (emotion_data) {
+        season_all_data = emotion_data    
     d3.json(data_urls[1]).then(function (emotion_data){
-        season_2_data = emotion_data
-        console.log("loaded data for season 2")
-        
+        season_2_data = emotion_data        
     })
     
     d3.json(data_urls[2]).then(function (emotion_data){
         season_3_data = emotion_data
-        console.log("loaded data for season 3")
     })
     
     d3.json(data_urls[3]).then(function (emotion_data){
         season_4_data = emotion_data
-        console.log("loaded data for season 4")
     })
-    
-    /*
-    d3.json(data_urls[4]).then(function (emotion_data){
-        season_all_data = emotion_data
-        console.log("loaded data for all seasons conjoined")
-        console.log(season_all_data)   
+
+    d3.json(data_urls[0]).then(function (emotion_data){
+        season_1_data = emotion_data
     })
+
     
     const ross_data = season_all_data[5]
     const monica_data = season_all_data[2]
     const chandler_data = season_all_data[0]
     const phoebe_data = season_all_data[3]
     const joey_data = season_all_data[1]
-    const rachel_data = season_all_data[4] */
-    
-    const ross_data = season_1_data[5]
-    const monica_data = season_1_data[2]
-    const chandler_data = season_1_data[0]
-    const phoebe_data = season_1_data[3]
-    const joey_data = season_1_data[1]
-    const rachel_data = season_1_data[4]
-    
+    const rachel_data = season_all_data[4] 
+
     const ross_values = getValuesAndCount(ross_data)
     const monica_values = getValuesAndCount(monica_data)
     const chandler_values = getValuesAndCount(chandler_data)
@@ -241,8 +226,10 @@ function startEmotions() {
     .range([0, xAxisWidth])
     .padding(0.1);
     
-    const seasonRects = xAxis
-    .selectAll('rect')
+    const seasonGroup = xAxis.append('g')
+    .attr('class', 'legend-group');
+  
+  const seasonRects = seasonGroup.selectAll('rect')
     .data(seasons)
     .enter()
     .append('rect')
@@ -255,19 +242,38 @@ function startEmotions() {
     .style('opacity', 0.4)
     .on('click', handleSeasonClick)
     .on('mouseover', function (d) {
-        d3.select(this)
-        .attr('d', seasonRects)
+      d3.select(this)
         .transition()
-        .style('opacity', 1)
+        .style('opacity', 1);
     })
     .on('mouseout', function (event, d) {
-        if (selectedSeason !== d){ 
-            d3.select(this)
-            .attr('d', seasonRects)
-            .transition()
-            .style('opacity', 0.4)
-        }
-    })
+      if (selectedSeason !== d) {
+        d3.select(this)
+          .transition()
+          .style('opacity', 0.4);
+      }
+    });
+
+      const textForBoxes = seasons.map((season) => {
+        return {
+          season: season,
+          text: `Season ${season.slice(-1)}` // Example text associated with each season
+        };
+      });
+
+
+  const seasonTexts = seasonGroup.selectAll('text')
+    .data(textForBoxes)
+    .enter()
+    .append('text')
+    .attr('x', (d) => axisScale(d.season) + axisScale.bandwidth() / 2)
+    .attr('y', xAxisHeight / 2)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .style('fill', 'black') // Set the text color
+    .style('font-size', '12px') // Set the font size
+    .style('pointer-events', 'none') // Disable pointer events
+    .text((d) => d.text);
     
     function redrawPieCharts(data) {
         const yScale = d3.scaleLinear()
@@ -323,7 +329,7 @@ function startEmotions() {
             seasonData = season_4_data
             break;
             case "":
-            //seasonData = season_all_data
+            seasonData = season_all_data
             break;
         }        
         
@@ -359,7 +365,6 @@ function startEmotions() {
         if(legendIsToggled === false){
           d3.select('#text-display').html(starterText)
         } else {
-            console.log("displaying emotion " + currentEmotion + " after changing season")
            d3.select('#text-display').html(textDisplayValues[currentEmotion])
         }
 
@@ -396,13 +401,10 @@ function startEmotions() {
             const rectId = rect.node().parentNode.getAttribute('data-id');
                 // Get the unique identifier of the current legend item
                 const rectOp = rect.style('opacity')
-                console.log(rectOp)
                 if(rectOp == 1){
                     legendIsToggled = true
-                    console.log("legend is toggled at:" + rectId + "with " + rectOp)
                 }
                 else{
-                    console.log("No legend items selected")
                 }
             })
         
@@ -665,7 +667,6 @@ function startEmotions() {
             .attr('d', arcGenerator.outerRadius(60).innerRadius(35));
         }
         );
-        console.log("Trace")
         
         
         // Change text box beneath legend
@@ -674,8 +675,6 @@ function startEmotions() {
         const rectId = rect.node().parentNode.getAttribute('data-id');
         updateTextValues()
         const selectedText = textDisplayValues[rectId];
-        console.log("Update text on legend click")
-        console.log("selectedText = " + selectedText)
         // Set the HTML content
         const div = d3.select('#text-display')
         div.html(selectedText);
@@ -686,15 +685,15 @@ function startEmotions() {
     });
     
     
-    
+ 
     function updateTextValues(){        
-        JoyfulText = `<dl><dt><strong>Joyful</strong></dt><dd><em>adjective</em></dd><dd>To be in a state of great happiness or delight.</dd><ul><li>Highest: ${categoryScoresMap.get("Joyful").maxCharacter} (${categoryScoresMap.get("Joyful").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Joyful").minCharacter} (${categoryScoresMap.get("Joyful").minScore.toFixed(5)*100}%)</li></ul></dl>`
-        MadText = `<dl><dt><strong>Mad</strong></dt><dd><em>adjective</em></dd><dd>Feeling or showing anger or intense irritation.</dd><ul><li>Highest: ${categoryScoresMap.get("Mad").maxCharacter} (${categoryScoresMap.get("Mad").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Mad").minCharacter} (${categoryScoresMap.get("Mad").minScore.toFixed(5)*100}%)</li></ul></dl>`
+        JoyfulText = `<dl><dt><strong>Joyful</strong></dt><dd><em>adjective</em></dd><dd>To be in a state of great happiness or delight.</dd><ul><li>Highest: ${categoryScoresMap.get("Joyful").maxCharacter} (${(categoryScoresMap.get("Joyful").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Joyful").minCharacter} (${(categoryScoresMap.get("Joyful").minScore*100).toFixed(2)}%)</li></ul></dl>`
+        MadText = `<dl><dt><strong>Mad</strong></dt><dd><em>adjective</em></dd><dd>Feeling or showing anger or intense irritation.</dd><ul><li>Highest: ${categoryScoresMap.get("Mad").maxCharacter} (${(categoryScoresMap.get("Mad").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Mad").minCharacter} (${(categoryScoresMap.get("Mad").minScore*100).toFixed(2)}%)</li></ul></dl>`
         NeutralText = "<dl><dt><strong>Neutral</strong></dt><dd><em>adjective</em></dd><dd>Not showing any particular emotion, indifferent.</dd><ul><li>The characters become more emotional as the seasons progress.</li></ul></dl>";
-        PeacefulText = `<dl><dt><strong>Peaceful</strong></dt><dd><em>adjective</em></dd><dd>Free from disturbance; tranquil.</dd><ul><li>Highest: ${categoryScoresMap.get("Peaceful").maxCharacter} (${categoryScoresMap.get("Peaceful").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Peaceful").minCharacter} (${categoryScoresMap.get("Peaceful").minScore.toFixed(5)*100}%)</li></ul></dl>`
-        PowerfulText = `<dl><dt><strong>Powerful</strong></dt><dd><em>adjective</em></dd><dd>Having great power, influence, or effect.</dd><ul><li>Highest: ${categoryScoresMap.get("Powerful").maxCharacter} (${categoryScoresMap.get("Powerful").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Powerful").minCharacter} (${categoryScoresMap.get("Powerful").minScore.toFixed(5)*100}%)</li></ul></dl>`
-        SadText = `<dl><dt><strong>Sad</strong></dt><dd><em>adjective</em></dd><dd>Feeling or showing sorrow; unhappy.</dd><ul><li>Highest: ${categoryScoresMap.get("Sad").maxCharacter} (${categoryScoresMap.get("Sad").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Sad").minCharacter} (${categoryScoresMap.get("Sad").minScore.toFixed(5)*100}%)</li></ul></dl>`
-        ScaredText = `<dl><dt><strong>Scared</strong></dt><dd><em>adjective</em></dd><dd>Feeling or being afraid or frightened.</dd><ul><li>Highest: ${categoryScoresMap.get("Scared").maxCharacter} (${categoryScoresMap.get("Scared").maxScore.toFixed(5)*100}%)</li><li>Lowest: ${categoryScoresMap.get("Scared").minCharacter} (${categoryScoresMap.get("Scared").minScore.toFixed(5)*100}%)</li></ul></dl>`
+        PeacefulText = `<dl><dt><strong>Peaceful</strong></dt><dd><em>adjective</em></dd><dd>Free from disturbance; tranquil.</dd><ul><li>Highest: ${categoryScoresMap.get("Peaceful").maxCharacter} (${(categoryScoresMap.get("Peaceful").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Peaceful").minCharacter} (${(categoryScoresMap.get("Peaceful").minScore*100).toFixed(2)}%)</li></ul></dl>`
+        PowerfulText = `<dl><dt><strong>Powerful</strong></dt><dd><em>adjective</em></dd><dd>Having great power, influence, or effect.</dd><ul><li>Highest: ${categoryScoresMap.get("Powerful").maxCharacter} (${(categoryScoresMap.get("Powerful").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Powerful").minCharacter} (${(categoryScoresMap.get("Powerful").minScore*100).toFixed(2)}%)</li></ul></dl>`
+        SadText = `<dl><dt><strong>Sad</strong></dt><dd><em>adjective</em></dd><dd>Feeling or showing sorrow; unhappy.</dd><ul><li>Highest: ${categoryScoresMap.get("Sad").maxCharacter} (${(categoryScoresMap.get("Sad").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Sad").minCharacter} (${(categoryScoresMap.get("Sad").minScore*100).toFixed(2)}%)</li></ul></dl>`
+        ScaredText = `<dl><dt><strong>Scared</strong></dt><dd><em>adjective</em></dd><dd>Feeling or being afraid or frightened.</dd><ul><li>Highest: ${categoryScoresMap.get("Scared").maxCharacter} (${(categoryScoresMap.get("Scared").maxScore*100).toFixed(2)}%)</li><li>Lowest: ${categoryScoresMap.get("Scared").minCharacter} (${(categoryScoresMap.get("Scared").minScore*100).toFixed(2)}%)</li></ul></dl>`
         textDisplayValues = [JoyfulText, MadText, NeutralText, PeacefulText, PowerfulText, SadText, ScaredText]
         
     }
