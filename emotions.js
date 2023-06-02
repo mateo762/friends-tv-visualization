@@ -47,7 +47,7 @@ function startEmotions() {
         console.log("loaded data for season 4")
     })
     
-    /*
+    
     d3.json(data_urls[4]).then(function (emotion_data){
         season_all_data = emotion_data
         console.log("loaded data for all seasons conjoined")
@@ -59,14 +59,7 @@ function startEmotions() {
     const chandler_data = season_all_data[0]
     const phoebe_data = season_all_data[3]
     const joey_data = season_all_data[1]
-    const rachel_data = season_all_data[4] */
-    
-    const ross_data = season_1_data[5]
-    const monica_data = season_1_data[2]
-    const chandler_data = season_1_data[0]
-    const phoebe_data = season_1_data[3]
-    const joey_data = season_1_data[1]
-    const rachel_data = season_1_data[4]
+    const rachel_data = season_all_data[4] 
     
     const ross_values = getValuesAndCount(ross_data)
     const monica_values = getValuesAndCount(monica_data)
