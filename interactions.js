@@ -1,6 +1,6 @@
 function startInteractions() {
     const width = 1500;
-    const height = 800;
+    const height = 700;
 
     // get all radio buttons
     const radioButtons = document.getElementsByName('season-interaction');
@@ -25,11 +25,11 @@ function startInteractions() {
         let simulationStrength;
         if (checkedRadioTopicId == 'season-interaction-1') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_1_to_3.json"
-            simulationStrength = -4400                                                    
-        } else if (checkedRadioTopicId == 'season-interaction-4') {                       
+            simulationStrength = -4400
+        } else if (checkedRadioTopicId == 'season-interaction-4') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_4_to_7.json"
-            simulationStrength = -4400                                                    
-        } else if (checkedRadioTopicId == 'season-interaction-8') {                       
+            simulationStrength = -4400
+        } else if (checkedRadioTopicId == 'season-interaction-8') {
             link_csv = "https://mateo762.github.io/friends_data/interactions_season_8_to_10.json";
             simulationStrength = -4400
         } else if (checkedRadioTopicId == 'season-interaction-all') {
@@ -86,11 +86,71 @@ function startInteractions() {
                 .attr("class", "interaction-div")
 
 
+            const xRect = width * 2 / 3
+
+            const infoTooltip = svg.append("g")
+                .attr("class", "info-tooltip")
+                .style("display", "block")
+
+
+            infoTooltip.append("rect")
+                .attr("class", "edge-tooltip-rect")
+                .attr("width", width / 3)
+                .attr("height", height)
+                .attr("fill", "#ccc")
+                .attr("stroke", "#000")
+                .attr("rx", 5)
+                .attr("ry", 5)
+                .attr("x", xRect)
+
+
+            infoTooltip.append("text")
+                .attr("class", "title-info")
+                .text("The Friendships Web")
+                .attr("x", xRect + width / 6)
+                .attr("y", 50)
+                .attr("font-size", "24px")
+                .attr("font-weight", "bold")
+                .attr("text-anchor", "middle")
+
+            const textParagraph1 = wordWrap("Welcome to 'The Friendships Web', our first visualization that draws you into the heart of Friends' complex relationships. This interactive graph illuminates the connections between our beloved characters across the show's lifespan. Select between the early years (Seasons 1-3), the middle years (Seasons 4-7), the later years (Seasons 8-10), or plunge into the entire series at a glance with our comprehensive graph. Each character is a node in this network, with the edge's thickness and color indicating the depth and frequency of their interactions - the darker the edge, the stronger the connection.", 50)
+
+            infoTooltip.append("text")
+                .attr("y", 80)
+                .attr("font-size", "18px")
+                .attr("text-anchor", "middle")
+                .attr("class", "text-paragraph-1")
+
+            infoTooltip.select(".text-paragraph-1")
+                .selectAll("tspan")
+                .data(textParagraph1)
+                .enter()
+                .append("tspan")
+                .text(d => d)
+                .attr("x", xRect + width / 6)
+                .attr("dy", () => "1.2em")
+
+            const textParagraph2 = wordWrap("Clicking on a character node unveils a wealth of insights. Discover a word cloud of each character's most characteristic words, and see who they most enjoy gossiping about. You can also click on the connecting edges to reveal the common words exchanged between the connected characters and find out who is more talkative. It's a unique, data-driven dive into the exchanges that kept us laughing, crying, and rooting for our favorite characters across ten seasons. Step into this engaging web of relationships, and see Friends in a whole new light with 'The Friendships Web'. Enjoy your journey!", 50)
+
+            infoTooltip.append("text")
+                .attr("y", 390)
+                .attr("font-size", "18px")
+                .attr("text-anchor", "middle")
+                .attr("class", "text-paragraph-2")
+
+            infoTooltip.select(".text-paragraph-2")
+                .selectAll("tspan")
+                .data(textParagraph2)
+                .enter()
+                .append("tspan")
+                .text(d => d)
+                .attr("x", xRect + width / 6)
+                .attr("dy", () => "1.2em")
+
+
             const edgeTooltip = svg.append("g")
                 .attr("class", "edge-tooltip")
                 .style("display", "none");
-
-            const xRect = width * 2 / 3
 
             edgeTooltip.append("rect")
                 .attr("class", "edge-tooltip-rect")
@@ -132,11 +192,11 @@ function startInteractions() {
                 .style("font-weight", "bold")
                 .attr("text-anchor", "middle")
 
-            
+
             edgeTooltip.append("text")
                 .attr("class", "text-words")
-                .attr("x", xRect + width/6)
-                .attr("y", 600)
+                .attr("x", xRect + width / 6)
+                .attr("y", 570)
                 .attr("font-size", "22px")
                 .style("font-weight", "bold")
                 .attr("text-anchor", "middle")
@@ -181,7 +241,7 @@ function startInteractions() {
 
             tooltip.append("image")
                 .attr("x", xRect + 190 - 150)
-                .attr("y", 600)
+                .attr("y", 580)
                 .attr("width", 100)
                 .attr("height", 100)
                 .attr("class", "image-gossip image-gossip-1");
@@ -189,14 +249,14 @@ function startInteractions() {
 
             tooltip.append("image")
                 .attr("x", xRect + 190)
-                .attr("y", 600)
+                .attr("y", 580)
                 .attr("width", 100)
                 .attr("height", 100)
                 .attr("class", "image-gossip image-gossip-2");
 
             tooltip.append("image")
                 .attr("x", xRect + 190 + 150)
-                .attr("y", 600)
+                .attr("y", 580)
                 .attr("width", 100)
                 .attr("height", 100)
                 .attr("class", "image-gossip image-gossip-3");
@@ -341,7 +401,7 @@ function startInteractions() {
 
                     const barChart = edgeTooltip.append("g")
                         .attr("class", "bar-chart")
-                        .attr("transform", `translate(${width * 2 / 3}, 650)`);  // move the g element
+                        .attr("transform", `translate(${width * 2 / 3}, 600)`);  // move the g element
 
                     let cumValue = 0;
 

@@ -11,6 +11,25 @@
 
 <body>
     <div class="container">
+        <div>
+            <img class="title" src="./pictures/FriendsLogo.png" />
+        </div>
+        <div class="text-block introduction">
+            <p>Welcome to our Friends Data Visualization project! If you're a fan of the beloved 90's comedy show,
+                Friends, you're in the right place. And even if you're not (yet), we believe you'll find the insights
+                we've gleaned from this treasure trove of a show to be fascinating. Friends is more than just a TV show;
+                it's a cultural phenomenon, a shared language, and a blueprint for the highs and lows of life. </p>
+            <p>In this website, we delve deep into the heart of Friends. Using a comprehensive dataset of the series
+                scripts, complete with utterances, conversations, emotions, and metadata, we explore the intricate
+                relationships, conversations, and emotions that make Friends so relatable and enduring. From tracking
+                character interactions to observing how their language and emotions evolved over the show's 10 seasons,
+                we've created a new way to experience and appreciate this iconic show. </p>
+            <p>Our goal is not just to entertain Friends fans, but also to shed light on the dynamics that make this
+                show resonate with our own relationships and experiences. To that end, we have created interactive
+                visualizations that are not just informative, but also engaging and enjoyable. We invite you to join us
+                on this data-driven journey through the universe of Friends. You might be surprised at what you'll find.
+            </p>
+        </div>
         <div id="interaction">
             <div class="radio-container">
                 <input type="radio" id="season-interaction-1" name="season-interaction" value="season-interaction-1">
@@ -21,11 +40,45 @@
 
                 <input type="radio" id="season-interaction-8" name="season-interaction" value="season-interaction-8">
                 <label for="season-interaction-8">Season 8-10</label>
-                
-                <input type="radio" id="season-interaction-all" name="season-interaction" value="season-interaction-all" checked>
+
+                <input type="radio" id="season-interaction-all" name="season-interaction" value="season-interaction-all"
+                    checked>
                 <label for="season-interaction-all">All seasons</label>
             </div>
             <svg id="interaction-svg"></svg>
+        </div>
+        <div class="text-block interactions-facts">
+            <p>Let's dive into some intriguing insights revealed by "The Friendships Web":</p>
+            <ul>
+                <li>
+                    <p><strong>Ross, the Lovable Paleontologist:</strong> Ross is the character most connected to
+                        secondary
+                        characters. Interestingly, most of these secondary characters have had a romantic storyline with
+                        Ross at some point in the series (Susan being a notable exception). It seems Ross's love life is
+                        as complex as a dinosaur fossil!</p>
+                </li>
+                <li>
+                    <p><strong>Ross and Rachel, the Talkative Duo:</strong> Their 'will they, won't they' saga
+                        dominated much of the show, and it's reflected in their dialogues. They've exchanged a whopping
+                        total of 35,431 words between them, the highest of any pair. Talk about a relationship built on
+                        communication.</p>
+                </li>
+                <li>
+                    <p><strong>Joey and Gunther, the Unlikely Pair:</strong> Who could forget Joey's fascination with
+                        Gunther's enviable 'natural' platinum hair? This unlikely bonding point has led to Joey being
+                        the main character who interacts the most with Gunther. It seems that Joey’s mantra “How you
+                        doin'?” resonates most at Central Perk!</p>
+                </li>
+                <li>
+                    <p><strong>Chandler's Love Evolution:</strong> In the early seasons (1-3), Joey was Chandler's main
+                        conversation partner, forming the base of many of the show’s best bromance moments. But from
+                        Season 4 onwards, Monica takes the top spot as Chandler's chief confidant. It seems Chandler has
+                        found a new favorite companion to share his sarcastic one-liners with!</p>
+                </li>
+            </ul>
+            <p>Each of these points provides a unique perspective on our favorite Friends' interactions and
+                relationships. What other interesting patterns will you discover in "The Friendships Web"? Explore
+                and find out!</p>
         </div>
         <div id="my_dataviz"></div>
         <div id="last_viz"></div>

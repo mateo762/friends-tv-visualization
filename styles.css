@@ -47,6 +47,17 @@ body {
     /* Add some shadow */
 }
 
+.info-tooltip rect {
+    fill: #f9f9f9;
+    /* Light background color */
+    stroke: #333;
+    /* Dark border color */
+    stroke-width: 1px;
+    /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add some shadow */
+}
+
 .tooltip text {
     font-family: Arial, sans-serif;
     /* Set a font family */
@@ -184,4 +195,30 @@ body {
     border: 1px solid #ddd;
     border-radius: 3px;
     pointer-events: none;
+}
+
+
+.title{
+    width: 700px;
+    margin-top: 100px;
+}
+
+p {
+  font-size: 18px;
+  /* Adjust the font size to your preference */
+  font-weight: normal;
+  color: #333;
+  text-align: justify;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.text-block{
+    margin-top: 100px;
+    width: 70%;
+}
+
+ul{
+    margin-top: 40px;
+    margin-bottom: 40px;
 }
