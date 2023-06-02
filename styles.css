@@ -1,3 +1,14 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f8f8;
+    padding: 0;
+    margin: 0;
+}
+
+
 .links line {
     stroke-opacity: 0.6;
 }
@@ -8,32 +19,170 @@
 }
 
 .edge-tooltip-rect {
-    fill: #e6a4a4; /* Light background color */
-    stroke: #333; /* Dark border color */
-    stroke-width: 1px; /* Border width */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow */
+    fill: #f9f9f9;
+    /* Light background color */
+    stroke: #333;
+    /* Dark border color */
+    stroke-width: 1px;
+    /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add some shadow */
 }
 
 .edge-tooltip text {
-    font-family: Arial, sans-serif; /* Set a font family */
-    fill: #333; /* Dark text color */
+    font-family: Arial, sans-serif;
+    /* Set a font family */
+    fill: #333;
+    /* Dark text color */
 }
 
 .tooltip rect {
-    fill: #f9f9f9; /* Light background color */
-    stroke: #333; /* Dark border color */
-    stroke-width: 1px; /* Border width */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow */
+    fill: #f9f9f9;
+    /* Light background color */
+    stroke: #333;
+    /* Dark border color */
+    stroke-width: 1px;
+    /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add some shadow */
+}
+
+.info-tooltip rect {
+    fill: #f9f9f9;
+    /* Light background color */
+    stroke: #333;
+    /* Dark border color */
+    stroke-width: 1px;
+    /* Border width */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add some shadow */
 }
 
 .tooltip text {
-    font-family: Arial, sans-serif; /* Set a font family */
-    fill: #333; /* Dark text color */
+    font-family: Arial, sans-serif;
+    /* Set a font family */
+    fill: #333;
+    /* Dark text color */
 }
 
 .fade {
     opacity: 0;
     transition: opacity 0.5s;
+}
+
+.container {
+    width: 80%;
+    /* Set the width of the container to 80% of the parent element */
+    margin: 0 auto;
+    /* Set the margins on the top and bottom to 0, and auto on the left and right to center the div horizontally */
+    display: flex;
+    /* Use flexbox layout to organize child elements */
+    flex-direction: column;
+    /* Align child elements in a column */
+    align-items: center;
+    /* Center child elements horizontally */
+    justify-content: center;
+    /* Center child elements vertically */
+    margin-bottom: 100px;
+}
+
+
+.interaction-div {
+    background-color: #f9f9f9;
+}
+
+#interaction{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.radio-container{
+    margin-bottom: 20px;
+}
+
+
+
+/* Radio button container and labels */
+
+
+.radio-margin {
+    margin-right: 10px;
+}
+
+.radio-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 690px;
+}
+
+.radio-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radio-container label {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    padding: 6px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    color: #495057;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.radio-container label:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.radio-container input[type="radio"] {
+    display: none;
+}
+
+/* Style the custom radio button indicator */
+.radio-container label span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 4px;
+    border: 1px solid #dee2e6;
+    border-radius: 50%;
+    vertical-align: middle;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Update the existing rule for the hover effect */
+.radio-container label:hover span {
+    border-color: #ced4da;
+}
+
+/* Rule for the selected radio button label */
+.radio-container input[type="radio"]:checked+label {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+/* Add a new rule to style the custom radio button indicator when it's checked */
+.radio-container input[type="radio"]:checked+label span {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+/* Update the existing rule for the hover effect on the selected radio button label */
+.radio-container input[type="radio"]:checked+label:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Add a new rule to style the custom radio button indicator when its label is hovered */
+.radio-container input[type="radio"]:checked+label:hover span {
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
 .tooltip {
@@ -46,4 +195,30 @@
     border: 1px solid #ddd;
     border-radius: 3px;
     pointer-events: none;
-  }
+}
+
+
+.title{
+    width: 700px;
+    margin-top: 100px;
+}
+
+p {
+  font-size: 18px;
+  /* Adjust the font size to your preference */
+  font-weight: normal;
+  color: #333;
+  text-align: justify;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.text-block{
+    margin-top: 100px;
+    width: 70%;
+}
+
+ul{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
