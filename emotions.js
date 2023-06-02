@@ -27,9 +27,10 @@ function startEmotions() {
     "https://mateo762.github.io/friends_data/emotions_s4.json",
     "https://mateo762.github.io/friends_data/emotions_all.json"]
     
-    d3.json("https://mateo762.github.io/friends_data/emotions_s1.json").then(function (emotion_data) {
-    season_1_data = emotion_data
-    console.log("loaded data for season 1")
+    d3.json(data_urls[4]).then(function (emotion_data) {
+        season_all_data = emotion_data
+        console.log("loaded data for all seasons conjoined")
+        console.log(season_all_data)
     
     d3.json(data_urls[1]).then(function (emotion_data){
         season_2_data = emotion_data
@@ -48,20 +49,26 @@ function startEmotions() {
     })
     
     
-    d3.json(data_urls[4]).then(function (emotion_data){
-        season_all_data = emotion_data
-        console.log("loaded data for all seasons conjoined")
-        console.log(season_all_data)   
+    d3.json(data_urls[0]).then(function (emotion_data){
+        season_1_data = emotion_data
+        console.log("loaded data for season 1")
     })
+
     
     const ross_data = season_all_data[5]
+    console.log("Ross data: " + ross_data)   
     const monica_data = season_all_data[2]
+    console.log("Monica data: " + monica_data)   
     const chandler_data = season_all_data[0]
     const phoebe_data = season_all_data[3]
     const joey_data = season_all_data[1]
     const rachel_data = season_all_data[4] 
+
+
     
     const ross_values = getValuesAndCount(ross_data)
+    console.log("Ross values: " + ross_values)   
+
     const monica_values = getValuesAndCount(monica_data)
     const chandler_values = getValuesAndCount(chandler_data)
     const phoebe_values = getValuesAndCount(phoebe_data)
@@ -70,6 +77,7 @@ function startEmotions() {
     
     
     function getValuesAndCount(char_data){
+        console.log(char_data)
         char_values = [char_data.Joyful, char_data.Mad, char_data.Neutral, char_data.Peaceful, char_data.Powerful, char_data.Sad, char_data.Scared];
         char_count = char_data.word_count
         return {char_values, char_count}
@@ -316,7 +324,7 @@ function startEmotions() {
             seasonData = season_4_data
             break;
             case "":
-            //seasonData = season_all_data
+            seasonData = season_all_data
             break;
         }        
         
