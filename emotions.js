@@ -226,8 +226,10 @@ function startEmotions() {
     .range([0, xAxisWidth])
     .padding(0.1);
     
-    const seasonRects = xAxis
-    .selectAll('rect')
+    const seasonGroup = xAxis.append('g')
+    .attr('class', 'legend-group');
+  
+  const seasonRects = seasonGroup.selectAll('rect')
     .data(seasons)
     .enter()
     .append('rect')
@@ -240,19 +242,38 @@ function startEmotions() {
     .style('opacity', 0.4)
     .on('click', handleSeasonClick)
     .on('mouseover', function (d) {
-        d3.select(this)
-        .attr('d', seasonRects)
+      d3.select(this)
         .transition()
-        .style('opacity', 1)
+        .style('opacity', 1);
     })
     .on('mouseout', function (event, d) {
-        if (selectedSeason !== d){ 
-            d3.select(this)
-            .attr('d', seasonRects)
-            .transition()
-            .style('opacity', 0.4)
-        }
-    })
+      if (selectedSeason !== d) {
+        d3.select(this)
+          .transition()
+          .style('opacity', 0.4);
+      }
+    });
+
+      const textForBoxes = seasons.map((season) => {
+        return {
+          season: season,
+          text: `Season ${season.slice(-1)}` // Example text associated with each season
+        };
+      });
+
+
+  const seasonTexts = seasonGroup.selectAll('text')
+    .data(textForBoxes)
+    .enter()
+    .append('text')
+    .attr('x', (d) => axisScale(d.season) + axisScale.bandwidth() / 2)
+    .attr('y', xAxisHeight / 2)
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .style('fill', 'black') // Set the text color
+    .style('font-size', '12px') // Set the font size
+    .style('pointer-events', 'none') // Disable pointer events
+    .text((d) => d.text);
     
     function redrawPieCharts(data) {
         const yScale = d3.scaleLinear()
