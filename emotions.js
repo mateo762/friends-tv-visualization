@@ -56,6 +56,7 @@ function startEmotions() {
         
         d3.json(word_data_urls[0]).then(function (emotion_data_words){
             season_all_data_words = emotion_data_words
+            wordData = season_all_data_words
             console.log(season_all_data_words)
         })
         
@@ -465,6 +466,10 @@ function startEmotions() {
         const colorScale = d3.scaleOrdinal()
         .range(emotion_colors);
         
+        const colorCloud = d3.scaleOrdinal()
+        .range(emotion_colors);
+        
+        
         const groups = chartsGroup.selectAll('g')
         .data(data)
         .enter()
@@ -528,20 +533,12 @@ function startEmotions() {
                 .transition()
                 .duration(200)
                 .style('opacity', 0.9);
-                /*getSectorTooltip(character, emotion).then(function(tooltipHtml){
-                    tooltip
-                    .html(tooltipHtml)
-                    .transition(200)
-                    .style('left', `${d.pageX}px`)
-                    .style('top', `${d.pageY - 28}px`);
-                })
-                */
                 const t = getSectorTooltip(character, emotion)
                 tooltip
-                    .html(t)
-                    .transition(200)
-                    .style('left', `${d.pageX}px`)
-                    .style('top', `${d.pageY - 28}px`);
+                .html(t)
+                .transition(200)
+                .style('left', `${d.pageX}px`)
+                .style('top', `${d.pageY - 28}px`);
             })
             .on('mouseover', function (d) {
                 
@@ -799,128 +796,78 @@ function startEmotions() {
         }
         
         function getWordCloud(words) {
-            return new Promise(function(resolve) {
-                
-                // Convert the words array into the expected format
-                let wordCloudWords = words.map(function(word) {
-                    return { text: word[0], size: word[1] };
-                });
-                
-                console.log(wordCloudWords)
-                
-                // Word cloud layout settings
-                var width = 400;
-                var height = 200;
-                var cloudPadding = 5;
-                
-                // Compute the domain of your size values
-                let sizeDomain = d3.extent(wordCloudWords, d => d.size);
-                
-                // Decide on your font size range
-                let fontSizeRange = [20, 30]; // Change this to fit your design
-                
-                // Create a scale for the font sizes
-                let fontSizeScale = d3.scaleLinear()
-                .domain(sizeDomain)
-                .range(fontSizeRange);
-                wordCloudWords = wordCloudWords.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
-                
-                console.log(wordCloudWords)
-                
-                // Create the word cloud layout
-                var layout = d3.layout
-                .cloud()
-                .size([width, height])
-                .words(wordCloudWords)
-                .padding(cloudPadding)
-                .rotate(function() {
-                    return ~~(Math.random() * 2) * 90; // Randomly rotate words
-                })
-                .font("Impact")
-                .fontSize(d => d.size) // Use the scale here
-                .on("end", draw);
-                
-                // Start the layout
-                layout.start();
-                
-                // Draw the word cloud
-                function draw(wordCloudWords) {
-                    
-                    console.log(wordCloudWords); // Check the generated words array
-                    
-                    var svg = d3
-                    .create("svg")
-                    .attr("width", width)
-                    .attr("height", height)
-                    .append("g")
-                    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-                    
-                    svg
-                    .selectAll("text")
-                    .data(wordCloudWords)
-                    .enter()
-                    .append("text")
-                    .style("font-size", function(d) {
-                        return d.size + "px";
-                    })
-                    .style("fill", function(d, i) {
-                        return d3.schemeCategory10[i % 10]; // Color each word
-                    })
-                    .attr("text-anchor", "middle")
-                    .attr("transform", function(d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .text(function(d) {
-                        return d.text;
-                    })
-                    .attr("class", "word");
-                    
-                    console.log(svg.node().outerHTML); // Check the generated SVG string
-                    
-                    resolve(svg.node().outerHTML); // Resolve the promise with the SVG string
-                }
-            });
+            let t = "";
+
+            let cloudWords = words.map(word => ({ text: word[0], size: word[1] }));
+                        
+            // Compute the domain of your size values
+            let sizeDomain = d3.extent(cloudWords, d => d.size);
+            
+            // Decide on your font size range
+            let fontSizeRange = [20, 30]; // Change this to fit your design
+            
+            // Create a scale for the font sizes
+            let fontSizeScale = d3.scaleLinear()
+            .domain(sizeDomain)
+            .range(fontSizeRange);
+            
+            cloudWords = cloudWords.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
+            console.log(cloudWords)
+            
+            // Create a new layout instance
+            let layout = d3.layout.cloud()
+            .size([300, 250]) // Set the size of the word cloud to the same size as your tooltip
+            .words(cloudWords)
+            .padding(2)
+            .rotate(() => (Math.random() < 0.5 ? 0 : 90)) // Randomly rotate words by 0 or 90 degrees
+            .font("Impact")
+            .fontSize(d => d.size) // Use the scale here
+            .on("end", draw);
+            
+            // Start the layout calculation
+            layout.start();
+
+            
+            function draw(cloudWords) {
+                const c = d3.create("svg")
+                .attr("width" , 300)
+                .attr("height" , 250);
+
+                const group = c.append("g")
+                .attr("transform", "translate(150,125)"); // Center the word cloud in the tooltip
+
+                const texts = group.selectAll("text")
+                .data(cloudWords)
+                .enter()
+                .append("text")
+                .style("font-size", d => `${d.size}px`)
+                .style("font-family", "Impact")
+                .style("fill", (_d, i) => colorCloud(i))
+                .attr("text-anchor", "middle")
+                .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
+                .text(d => d.text);
+                console.log(c.node().outerHTML)
+                t = c.node().outerHTML;
+            }
+            return t
         }
         
         function getSectorTooltip(character, emotion){
+            console.log(character)
+            console.log(emotion)
+            console.log(wordData)
             const data = wordData[character][emotion].characters
             const words = wordData[character][emotion].words
             console.log(words)
             let characters = getKeysWithHighestValues(data)
             characters = updateNames(characters)
-            let topWords = words
-            /*
-            return getWordCloud(words).then(function(svgString) {
-                const tooltipHtml =  `<div id="emotion-tooltip" class="emotion-tooltip">
-                <div>
-                <span>Most common words associated</span>
-                <div id="emotion-wordcloud">
-                ${svgString}
-                </div>
-                </div>
-                <div>
-                <span>Character interactions associated</span>
-                <div>
-                <img id="emotion-tooltip-image-1" src="pictures/${characters[0]}.png">
-                <img id="emotion-tooltip-image-1" src="pictures/${characters[1]}.png">
-                <img id="emotion-tooltip-image-1" src="pictures/${characters[2]}.png">
-                </div>
-                </div>
-                </div>`
-                return tooltipHtml
-            })
-        })
-            */
-           console.log(topWords)
-           return `<div id="emotion-tooltip" class="emotion-tooltip">
+            let cloudWords = getWordCloud(words)
+            console.log(cloudWords)
+            const tooltipHtml =  `<div id="emotion-tooltip" class="emotion-tooltip">
             <div>
             <span>Most common words associated</span>
             <div id="emotion-wordcloud">
-                <ul>
-                    <li> ${topWords[0][0]}</h3>
-                    <li> ${topWords[1][0]}</h3>
-                    <li> ${topWords[2][0]}</h3>
-                </ul>
+            ${cloudWords}
             </div>
             </div>
             <div>
@@ -932,6 +879,7 @@ function startEmotions() {
             </div>
             </div>
             </div>`
+            return tooltipHtml
         }
     })
 }
