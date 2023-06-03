@@ -1,5 +1,14 @@
 function startAppearances() {
     let selectedName = ''
+    let linesData = []
+    let separatedLinesData = []
+    let episodesData = []
+    let linesCountData = []
+    let wordsCountData = []
+    let wordsUsagesCountData = []
+    let margin = {top: 25, right: 60, bottom: 60, left: 120};
+    const width = 700 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
     function getSeasonOfInput(input) {
         if (input.getAttribute('id') == "all-season-appearances") {
@@ -40,19 +49,26 @@ function startAppearances() {
             .text(ylabel)
     }
 
-    function updateScatterplot(scatterplotSvg,data,name,max,season,xlabel,ylabel) {
+    function updateScatterplot(scatterplotSvg,data,name,max,season,xlabel,ylabel,first = true) {
         // Clear the scatterplot
         scatterplotSvg.selectAll("*").remove();
 
         // Transform the data for the selected character into an array
         let countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
+        // let linesArrayData = Object.entries(linesData[name]).map(([name, count]) => ({ name, count }));
 
+        let filteredData = []
 
         if (season != 'all') {
             let id = parseInt(getSelectedEpisode().getAttribute('id'))
             let episode = `e${id<10?"0"+id:id}`
-            countArrayData = countArrayData.filter((name) => name.name.includes(episode))
+            if (first == true) {
+                filteredData = linesData[name][season][episode]
+            } else {
+                filteredData = separatedLinesData[name][season][episode]
+            }
             countArrayData = countArrayData.filter((name) => name.name.startsWith(season))
+            countArrayData = countArrayData.filter((name) => name.name.includes(episode))
         }
         countArrayDataFiltered = []
         countArrayData.forEach((object) => {
@@ -94,7 +110,8 @@ function startAppearances() {
         }
         let distanceFromColumnCenter = ((width/2)/conversationsCount)
         let radius = 5
-        debugger
+        
+        console.log(filteredData)
         // Create the circles for the scatterplot
         scatterplotSvg.selectAll(".circle")
             .data(countArrayDataFiltered)
@@ -103,7 +120,23 @@ function startAppearances() {
             .attr("class", "circle")
             .attr("cx", function (d) { return xScatterplotScale(d.name) + distanceFromColumnCenter - radius; })
             .attr("cy", function (d) { return yScatterplotScale(d.count); })
-            .attr("r", radius);
+            .attr("r", radius)
+            .on("mouseover",function(d) {
+                debugger
+                let conv = `c${this.__data__.name.split('c')[1]}`
+                let result = filteredData[conv][0]
+                result = result.join(' ')
+                scatterplotSvg.append("text")
+                .attr('x',10)
+                .attr('y',0)
+                .attr('class','profile-img-desc')
+                .attr('width', width)
+                .attr('height', 5)
+                .text(result)
+            })
+            .on("mouseout",function(d) {
+                d3.selectAll('.profile-img-desc').remove()
+            })
 
         // Add the x-axis for the scatterplot
         scatterplotSvg.append("g")
@@ -121,22 +154,21 @@ function startAppearances() {
     }
 
 
-    let episodesData = []
-    let linesCountData = []
-    let wordsCountData = []
-    let wordsUsagesCountData = []
-    let margin = {top: 25, right: 60, bottom: 60, left: 120};
-    const width = 700 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
-
-
     function link(name) {
         return `https://enrico-benedettini.github.io/friends_data/${name}.json`
     }
 
     
-    d3.json(link("episodes_per_season")).then(function (episodesPerSeason) {
-        episodesData = episodesPerSeason
+    d3.json(link("lines_per_conversation")).then(function (linesPerConversation) {
+        linesData = linesPerConversation
+    }).then(function (){
+        d3.json(link("separated_lines_per_conversation")).then(function (separatedLinesPerConversation) {
+            separatedLinesData = separatedLinesPerConversation
+        })
+    }).then(function (){
+        d3.json(link("episodes_per_season")).then(function (episodesPerSeason) {
+            episodesData = episodesPerSeason
+        })
     }).then(function (){
         d3.json(link("lines_counts")).then(function (linesData) {
             linesCountData = linesData
@@ -188,10 +220,6 @@ function startAppearances() {
                 .domain([0, max])
                 .range([height, 0]);
 
-
-
-                // Calculate the total width of all bars
-                const totalWidth = dataArray.length * (xHistogramScale.bandwidth() + xHistogramScale.paddingOuter() * 2);
 
                 /* 3. Content addition */
                 // We create the bars and add them to our chart
@@ -304,8 +332,8 @@ function startAppearances() {
                 addHistogramListeners(bars)
     
                 if(selectedName!='') {
-                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines")
-                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season,"Utterance id","Number of words")
+                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines",true)
+                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season,"Conversation id","Number of words",false)
                     histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
             }
@@ -333,24 +361,24 @@ function startAppearances() {
                         if (season!='all') {
                             document.getElementById("01").setAttribute('style', 'background-color: rgb(0, 123, 255);')
                             btn.removeAttribute('style');
-                        } else{
-                            btn.setAttribute('style', 'display: none;');
-                        }
-                        let epLinks = document.querySelectorAll('.episode')
-                        epLinks.forEach((ep)=>{
-                            ep.addEventListener(("click"),function(d) {
-                                // Reset backgroundColor of previously selected <a> tag and select the new one
+                            let epLinks = document.querySelectorAll('.episode')
+                            epLinks.forEach((ep)=>{
+                                ep.addEventListener(("click"),function(d) {
+                                    // Reset backgroundColor of previously selected <a> tag and select the new one
                                 getSelectedEpisode().removeAttribute('style');
                                 // Set the color of the newly selected <a>
                                 ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
-        
+                                
                                 let e = parseInt(ep.getAttribute('id'))
-        
+                                
                                 btn.innerHTML = ep.innerHTML
                                 updateGraphs(season)
+                                });
                             });
-                        });
-
+                        } else{
+                            btn.setAttribute('style', 'display: none;');
+                        }
+                        
                         updateGraphs(season)
                     }
                 })
