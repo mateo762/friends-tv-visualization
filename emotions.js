@@ -57,7 +57,6 @@ function startEmotions() {
         d3.json(word_data_urls[0]).then(function (emotion_data_words){
             season_all_data_words = emotion_data_words
             wordData = season_all_data_words
-            console.log(season_all_data_words)
         })
         
         
@@ -526,8 +525,6 @@ function startEmotions() {
                 // You can access the associated pie chart and perform actions based on it
                 const character = pieChart.name
                 const emotion = emotion_list[d3.select(this).datum().index]
-                console.log('Clicked sector belongs to pie chart:', character);
-                console.log('Emotion:', emotion);
                 // You can also access the associated data using d.data and perform actions based on it
                 tooltip
                 .transition()
@@ -812,14 +809,13 @@ function startEmotions() {
             .range(fontSizeRange);
             
             cloudWords = cloudWords.map(word => ({ text: word.text, size: fontSizeScale(word.size) }))
-            console.log(cloudWords)
             
             // Create a new layout instance
             let layout = d3.layout.cloud()
             .size([300, 250]) // Set the size of the word cloud to the same size as your tooltip
             .words(cloudWords)
             .padding(2)
-            .rotate(() => (Math.random() < 0.5 ? 0 : 90)) // Randomly rotate words by 0 or 90 degrees
+            .rotate(() => (Math.random() < 0.5 ? 0 : 0)) // Randomly rotate words by 0 or 90 degrees
             .font("Impact")
             .fontSize(d => d.size) // Use the scale here
             .on("end", draw);
@@ -846,23 +842,18 @@ function startEmotions() {
                 .attr("text-anchor", "middle")
                 .attr("transform", d => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
                 .text(d => d.text);
-                console.log(c.node().outerHTML)
                 t = c.node().outerHTML;
             }
             return t
         }
         
         function getSectorTooltip(character, emotion){
-            console.log(character)
-            console.log(emotion)
-            console.log(wordData)
             const data = wordData[character][emotion].characters
             const words = wordData[character][emotion].words
-            console.log(words)
+            console.log(data)
             let characters = getKeysWithHighestValues(data)
             characters = updateNames(characters)
             let cloudWords = getWordCloud(words)
-            console.log(cloudWords)
             const tooltipHtml =  `<div id="emotion-tooltip" class="emotion-tooltip">
             <div>
             <span>Most common words associated</span>
