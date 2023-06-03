@@ -1,8 +1,26 @@
 function startAppearances() {
     let selectedName = ''
 
-    function stringSeason(season) {
-        return `s${season<10?`0${season}`:season}`
+    function getSeasonOfInput(input) {
+        if (input.getAttribute('id') == "all-season-appearances") {
+            return 'all'
+        } else {
+            let season = input.getAttribute('id').split('-')[2]
+            return `s${season<10?`0${season}`:season}`
+        }
+    }
+
+    function getSelectedSeason() {
+        return getSeasonOfInput(document.querySelector('#last-viz > .radio-container > input[name="season-appearances"]:checked'))
+    }
+
+    function getSelectedEpisode() {
+        let episodes = document.querySelectorAll('.dropdown-content > a')
+        for (let i = 0; i < episodes.length; i++) {
+            if (episodes[i].style['background-color'] == 'rgb(0, 123, 255)') {
+                return episodes[i]
+            }
+        }
     }
 
     function addLabelToAxes(svg,xlabel,ylabel) {
@@ -27,12 +45,17 @@ function startAppearances() {
         scatterplotSvg.selectAll("*").remove();
 
         // Transform the data for the selected character into an array
-        const countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
+        let countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
 
 
-        let countArrayDataFiltered = season=='all' ? countArrayData : countArrayData.filter((name) => name.name.startsWith(stringSeason(season)))
-        countArrayDataFilteredSplit = []
-        countArrayDataFiltered.forEach((object) => {
+        if (season != 'all') {
+            let id = parseInt(getSelectedEpisode().getAttribute('id'))
+            let episode = `e${id<10?"0"+id:id}`
+            countArrayData = countArrayData.filter((name) => name.name.includes(episode))
+            countArrayData = countArrayData.filter((name) => name.name.startsWith(season))
+        }
+        countArrayDataFiltered = []
+        countArrayData.forEach((object) => {
             val = {}
             val.count = object.count
             let splittedName = object.name.split('_')
@@ -43,32 +66,44 @@ function startAppearances() {
                 return accumulator
             }, '');  
             val.name = splittedName
-            countArrayDataFilteredSplit.push(val)
+            countArrayDataFiltered.push(val)
         });
 
         // Create the x scale
         const xScatterplotScale = d3
         .scaleBand()
-        .domain(countArrayDataFilteredSplit.map(d => d.name))
+        .domain(countArrayDataFiltered.map(d => d.name))
         .range([0, width])
         .padding(0.1);
 
         // Create the y scale
         const yScatterplotScale = d3
         .scaleLinear()
-        // .domain([0, d3.max(countArrayDataFilteredSplit, d => d.count)]) // we could adjust the domain for each character
+        // .domain([0, d3.max(countArrayDataFiltered, d => d.count)]) // we could adjust the domain for each character
         .domain([0,max]) // but rather, we set it such that it's fix for each of them as it makes it easier to compare between each character
         .range([height, 0]);
 
+        let conversationsCount = 0
+        let prec = ''
+        for (let i = 0; i < countArrayDataFiltered.length; i++) {
+            let el = countArrayDataFiltered[i];
+            if (el.name != prec) {
+                conversationsCount++
+                prec = el.name
+            }
+        }
+        let distanceFromColumnCenter = ((width/2)/conversationsCount)
+        let radius = 5
+        debugger
         // Create the circles for the scatterplot
         scatterplotSvg.selectAll(".circle")
-            .data(countArrayDataFilteredSplit)
+            .data(countArrayDataFiltered)
             .enter()
             .append("circle")
             .attr("class", "circle")
-            .attr("cx", function (d) { return xScatterplotScale(d.name); })
+            .attr("cx", function (d) { return xScatterplotScale(d.name) + distanceFromColumnCenter - radius; })
             .attr("cy", function (d) { return yScatterplotScale(d.count); })
-            .attr("r", 5);
+            .attr("r", radius);
 
         // Add the x-axis for the scatterplot
         scatterplotSvg.append("g")
@@ -86,24 +121,30 @@ function startAppearances() {
     }
 
 
+    let episodesData = []
     let linesCountData = []
     let wordsCountData = []
     let wordsUsagesCountData = []
     let margin = {top: 25, right: 60, bottom: 60, left: 120};
-    const width = 800 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    const width = 700 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
 
 
     function link(name) {
         return `https://enrico-benedettini.github.io/friends_data/${name}.json`
     }
 
-    d3.json(link("lines_counts")).then(function (linesData) {
-        linesCountData = linesData
+    
+    d3.json(link("episodes_per_season")).then(function (episodesPerSeason) {
+        episodesData = episodesPerSeason
     }).then(function (){
-    d3.json(link("words_per_line")).then(function (words_data) {
-        wordsCountData = words_data
-    })
+        d3.json(link("lines_counts")).then(function (linesData) {
+            linesCountData = linesData
+        })
+    }).then(function (){
+        d3.json(link("words_per_line")).then(function (words_data) {
+            wordsCountData = words_data
+        })
     }).then(function (){
         d3.json(link("words_usages")).then(function (usages_data) {
             wordsUsagesCountData = usages_data
@@ -112,7 +153,6 @@ function startAppearances() {
         d3.json(link("character_appearances")).then(function (apperancesData) {
             function histogram(svg,data,season,xlabel,ylabel,perCharacter=false,name) {
                 
-                season = season=='all'?season:stringSeason(season)
                 /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
                 if (perCharacter == true) {
                     data = data[name][season]
@@ -147,6 +187,11 @@ function startAppearances() {
                 .scaleLinear()
                 .domain([0, max])
                 .range([height, 0]);
+
+
+
+                // Calculate the total width of all bars
+                const totalWidth = dataArray.length * (xHistogramScale.bandwidth() + xHistogramScale.paddingOuter() * 2);
 
                 /* 3. Content addition */
                 // We create the bars and add them to our chart
@@ -191,7 +236,7 @@ function startAppearances() {
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
             }
 
             // Create the SVG elements for the scatterplots and histogram
@@ -237,9 +282,16 @@ function startAppearances() {
                     d3.selectAll('.profile-img').remove()
                     d3.selectAll('.profile-img-connect-line').remove()
                 });
+
+                // Update the translation of the bars group based on the scroll position
+                histogramSvg.on("scroll", () => {
+                    const scrollX = svg.node().scrollLeft;
+                    bars.attr("transform", `translate(${-scrollX}, 0)`);
+                });
             }
 
             function updateGraphs(season) {
+
                 const bars = histogram(histogramSvg,apperancesData,season,"Characters","Number of appearances")
                 addHistogramListeners(bars)
     
@@ -248,18 +300,6 @@ function startAppearances() {
                     updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season,"Utterance id","Number of words")
                     histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
-            }
-
-            function getSeasonOfInput(input) {
-                if (input.getAttribute('id') == "all-season-appearances") {
-                    return 'all'
-                } else {
-                    return input.getAttribute('id').split('-')[2]
-                }
-            }
-
-            function getSelectedSeason() {
-                return getSeasonOfInput(document.querySelector('#last-viz > .radio-container > input[name="season-appearances"]:checked'))
             }
 
             const bars = histogram(histogramSvg,apperancesData,getSelectedSeason(),"Characters","Number of appearances")
@@ -271,7 +311,34 @@ function startAppearances() {
                 input.addEventListener('change', function(e) {
                     // if this radio button is checked
                     if (e.target.checked) {
-                        updateGraphs(getSeasonOfInput(input))
+                        let season = getSeasonOfInput(input)
+                        let content = document.querySelector('.dropdown-content')
+                        let nEpisodes = episodesData[season]
+                        let btn = document.querySelector('.dropdown-btn')
+                        btn.innerHTML = "Episode 01"
+                        content.innerHTML = ''
+                        for (let i = 1; i <= nEpisodes; i++) {
+                            let ep = i < 10?"0"+i:i
+                            content.innerHTML += `<a class="episode" id="${ep}">Episode ${ep}</a>`
+                        }
+
+                        document.getElementById("01").setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                        let epLinks = document.querySelectorAll('.episode')
+                        epLinks.forEach((ep)=>{
+                            ep.addEventListener(("click"),function(d) {
+                                // Reset backgroundColor of previously selected <a> tag and select the new one
+                                getSelectedEpisode().removeAttribute('style');
+                                // Set the color of the newly selected <a>
+                                ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
+        
+                                let e = parseInt(ep.getAttribute('id'))
+        
+                                btn.innerHTML = ep.innerHTML
+                                updateGraphs(season)
+                            });
+                        });
+
+                        updateGraphs(season)
                     }
                 })
             })
