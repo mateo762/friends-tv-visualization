@@ -96,6 +96,10 @@ body {
     margin-bottom: 100px;
 }
 
+.interactions-facts{
+    margin-bottom: 100px;
+}
+
 .radio-container {
     margin-bottom: 20px;
 }
@@ -281,4 +285,8 @@ ul {
 
 .radarChart svg{
     align-self: self-start;
+}
+
+.no-margin{
+    margin-top: 20px;
 }
