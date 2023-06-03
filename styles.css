@@ -286,6 +286,7 @@ ul {
 
 .radarChart svg{
     align-self: self-start;
+}
 
 .bar {
     fill:var(--bar-color);
