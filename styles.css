@@ -96,12 +96,12 @@ body {
     background-color: #f9f9f9;
 }
 
-#interaction{
+#interaction {
     margin-top: 100px;
     margin-bottom: 100px;
 }
 
-.radio-container{
+.radio-container {
     margin-bottom: 20px;
 }
 
@@ -203,64 +203,89 @@ body {
 }
 
 
-.title{
+.title {
     width: 700px;
     margin-top: 100px;
 }
 
 p {
-  font-size: 18px;
-  /* Adjust the font size to your preference */
-  font-weight: normal;
-  color: #333;
-  text-align: justify;
-  margin-bottom: 20px;
-  line-height: 1.6;
+    font-size: 18px;
+    /* Adjust the font size to your preference */
+    font-weight: normal;
+    color: #333;
+    text-align: justify;
+    margin-bottom: 20px;
+    line-height: 1.6;
 }
 
-.text-block{
+.text-block {
     margin-top: 100px;
     width: 70%;
 }
 
-ul{
+ul {
     margin-top: 40px;
     margin-bottom: 40px;
 }
 
-#my_dataviz{
+#my_dataviz {
     align-content: center;
     padding-left: 10%;
     background-color: #f9f9f9;
 
 }
 
-#emotion-tooltip-image-1{
-    width : 22%;
-    padding:10px;
+#emotion-tooltip-image-1 {
+    width: 22%;
+    padding: 10px;
 }
 
-#emotion-tooltip{
-    width : 320px;
+#emotion-tooltip {
+    width: 320px;
     height: 375px;
     padding: 5px;
     margin: 5px;
 }
 
-#emotion-wordcloud{
-    width : fit-content;
+#emotion-wordcloud {
+    width: fit-content;
     width: 100%;
-    height: auto; /* Adjust as needed */
+    height: auto;
+    /* Adjust as needed */
     display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 #emotion-wordcloud li {
     font-size: large;
     align-self: start;
 }
+
+.character-images {
+    display: flex;
+    justify-content: space-between;
+}
+
+.character-images circle {
+    fill: url(#image);
+    stroke: #69b3a2;
+    stroke-width: 10;
+}
+
+#personality{
+    margin-top: 100px;
+}
+
+.radarChart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.radarChart svg{
+    align-self: self-start;
 
 .bar {
     fill:var(--bar-color);
