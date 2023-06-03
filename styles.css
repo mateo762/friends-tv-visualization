@@ -1,3 +1,8 @@
+:root {
+    --bar-color:rgb(0, 0, 255);
+    --bar-color-hover: rgb(0, 250, 250);
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
@@ -255,4 +260,12 @@ ul{
 #emotion-wordcloud li {
     font-size: large;
     align-self: start;
+}
+
+.bar {
+    fill:var(--bar-color);
+}
+
+.bar:hover {
+    fill:var(--bar-color-hover);
 }
