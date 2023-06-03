@@ -34,7 +34,11 @@ function startEmotions() {
     "https://mateo762.github.io/friends_data/emotions_s4.json",
     "https://mateo762.github.io/friends_data/emotions_all.json"]
     
-    const word_data_urls = ["https://mateo762.github.io/friends_data/emotions_all_2.json"]
+    const word_data_urls = ["https://mateo762.github.io/friends_data/emotions_all_2.json",
+    "https://mateo762.github.io/friends_data/emotions_words_s1.json",
+    "https://mateo762.github.io/friends_data/emotions_words_s2.json",
+    "https://mateo762.github.io/friends_data/emotions_words_s3.json",
+    "https://mateo762.github.io/friends_data/emotions_words_s4.json"]
     
     d3.json(data_urls[4]).then(function (emotion_data) {
         season_all_data = emotion_data    
@@ -57,7 +61,18 @@ function startEmotions() {
         d3.json(word_data_urls[0]).then(function (emotion_data_words){
             season_all_data_words = emotion_data_words
             wordData = season_all_data_words
-            console.log(season_all_data_words)
+        })
+        d3.json(word_data_urls[1]).then(function (emotion_data_words){
+            season_1_data_words = emotion_data_words
+        })
+        d3.json(word_data_urls[2]).then(function (emotion_data_words){
+            season_2_data_words = emotion_data_words
+        })
+        d3.json(word_data_urls[3]).then(function (emotion_data_words){
+            season_3_data_words = emotion_data_words
+        })
+        d3.json(word_data_urls[4]).then(function (emotion_data_words){
+            season_4_data_words = emotion_data_words
         })
         
         
@@ -355,7 +370,7 @@ function startEmotions() {
                 break;
             }        
             
-            tempWordData = wordData
+            wordData = tempWordData
             const ross_data = seasonData[5]
             const monica_data = seasonData[2]
             const chandler_data = seasonData[0]
@@ -819,7 +834,7 @@ function startEmotions() {
             .size([300, 250]) // Set the size of the word cloud to the same size as your tooltip
             .words(cloudWords)
             .padding(2)
-            .rotate(() => (Math.random() < 0.5 ? 0 : 90)) // Randomly rotate words by 0 or 90 degrees
+            .rotate(() => (Math.random() < 0.5 ? 0 : 0)) // Randomly rotate words by 0 or 90 degrees
             .font("Impact")
             .fontSize(d => d.size) // Use the scale here
             .on("end", draw);
