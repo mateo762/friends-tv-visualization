@@ -5,7 +5,24 @@ function startAppearances() {
         return `s${season<10?`0${season}`:season}`
     }
 
-    function updateScatterplot(scatterplotSvg,data,name,max,season) {
+    function addLabelToAxes(svg,xlabel,ylabel) {
+
+        svg.append("text")
+            .attr("class", "x label")
+            .attr("text-anchor", "middle")
+            .attr("x", width/2)
+            .attr("y", height+50)
+            .text(xlabel);
+
+        svg.append('g')
+            .attr('transform', `translate(${-50}, ${height / 2})`)
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('transform', 'rotate(-90)')
+            .text(ylabel)
+    }
+
+    function updateScatterplot(scatterplotSvg,data,name,max,season,xlabel,ylabel) {
         // Clear the scatterplot
         scatterplotSvg.selectAll("*").remove();
 
@@ -64,13 +81,15 @@ function startAppearances() {
         // Add the y-axis for the scatterplot
         scatterplotSvg.append("g")
             .call(d3.axisLeft(yScatterplotScale));
+
+        addLabelToAxes(scatterplotSvg,xlabel,ylabel)
     }
 
 
     let linesCountData = []
     let wordsCountData = []
     let wordsUsagesCountData = []
-    let margin = {top: 10, right: 30, bottom: 30, left: 60};
+    let margin = {top: 25, right: 60, bottom: 60, left: 120};
     const width = 800 - margin.left - margin.right;
     const height = 600 - margin.top - margin.bottom;
 
@@ -91,7 +110,7 @@ function startAppearances() {
         })
     }).then(function (){
         d3.json(link("character_appearances")).then(function (apperancesData) {
-            function histogram(svg,data,season,perCharacter=false,name) {
+            function histogram(svg,data,season,xlabel,ylabel,perCharacter=false,name) {
                 
                 season = season=='all'?season:stringSeason(season)
                 /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
@@ -119,11 +138,14 @@ function startAppearances() {
                 .domain(dataArray.map(d => d.name))
                 .range([0, width])
                 .padding(0.1);
-
+                
                 // Create the y scale
+                // First, evaluate the maximum based on the highest count and add a 10% space to it to fit its description on hover
+                let max = d3.max(dataArray, d => d.count)
+                max = max + (max/10)
                 const yHistogramScale = d3
                 .scaleLinear()
-                .domain([0, d3.max(dataArray, d => d.count)])
+                .domain([0, max])
                 .range([height, 0]);
 
                 /* 3. Content addition */
@@ -133,7 +155,6 @@ function startAppearances() {
                     .data(dataArray)
                     .enter()
                     .append("rect")
-                    .style("fill", "blue")
                     .attr("class", "bar")
                     .attr("x", d => xHistogramScale(d.name))
                     .attr("y", d => yHistogramScale(d.count))
@@ -155,6 +176,10 @@ function startAppearances() {
                     .append("g")
                     .attr("class", "y-axis")
                     .call(yAxis);
+
+                /* 5. Add labels to x and y axes */
+                addLabelToAxes(svg,xlabel,ylabel)
+
                 return bars
             }
 
@@ -175,21 +200,53 @@ function startAppearances() {
             let wordsScatterplotSvg = createSvg()
             let wordsUsagesHistogramSvg = createSvg()
 
-            // function seasonOrAll(season){
-            //     return season==undefined?'all':season
-            // }
-
-            function updateGraphs(season) {
-                const bars = histogram(histogramSvg,apperancesData,season)
+            function addHistogramListeners(bars) {
                 bars.on("click", function (d) {
                     selectedName = this.__data__.name
                     updateGraphs(getSelectedSeason())
                 });
+                bars.on("mouseover", function (d) {
+                    let character = this.__data__.name.split(" ")[0].toLowerCase()
+                    let lineLength = 10
+                    let profilePicDimension = 50
+                    let w = this.getAttribute('width')
+                    let x = this.getAttribute('x')
+                    let y = this.getAttribute('y') - profilePicDimension - lineLength
+                    x = parseInt(x) + parseInt(w/2) - (profilePicDimension/2)
+                    histogramSvg.append("svg:image")
+                        .attr('x',x)
+                        .attr('y',y)
+                        .attr('class','profile-img')
+                        .attr('width', profilePicDimension)
+                        .attr('height', profilePicDimension)
+                        .attr('xlink:href',`pictures/${character}.png`)
+                    x = x + (profilePicDimension/2)
+                    y = y + profilePicDimension
+                    histogramSvg.append("line")
+                        .attr('x1',x)
+                        .attr('y1',y)
+                        .attr('x2',x)
+                        .attr('y2',y+lineLength)
+                        .attr('class','profile-img-connect-line')
+                        .attr("stroke-width", 3)
+                        .attr("stroke", "black")
+                        .attr('height', profilePicDimension)
+
+                });
+                bars.on("mouseout", function (d) {
+                    d3.selectAll('.profile-img').remove()
+                    d3.selectAll('.profile-img-connect-line').remove()
+                });
+            }
+
+            function updateGraphs(season) {
+                const bars = histogram(histogramSvg,apperancesData,season,"Characters","Number of appearances")
+                addHistogramListeners(bars)
     
                 if(selectedName!='') {
-                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season)
-                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season)
-                    histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, true, selectedName)
+                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines")
+                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season,"Utterance id","Number of words")
+                    histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
             }
 
@@ -205,12 +262,9 @@ function startAppearances() {
                 return getSeasonOfInput(document.querySelector('#last-viz > .radio-container > input[name="season-appearances"]:checked'))
             }
 
-            const bars = histogram(histogramSvg,apperancesData,getSelectedSeason())
+            const bars = histogram(histogramSvg,apperancesData,getSelectedSeason(),"Characters","Number of appearances")
             // Add event listener to the bars
-            bars.on("click", function (d) {
-                selectedName = this.__data__.name
-                updateGraphs(getSelectedSeason())
-            });
+            addHistogramListeners(bars)
 
             let inputs = document.querySelectorAll('#last-viz > .radio-container > [name="season-appearances"]')
             inputs.forEach((input) => {
