@@ -235,6 +235,33 @@ ul{
 
 }
 
+#emotion-tooltip-image-1{
+    width : 22%;
+    padding:10px;
+}
+
+#emotion-tooltip{
+    width : 320px;
+    height: 375px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#emotion-wordcloud{
+    width : fit-content;
+    width: 100%;
+    height: auto; /* Adjust as needed */
+    display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#emotion-wordcloud li {
+    font-size: large;
+    align-self: start;
+}
+
 .bar {
     fill:var(--bar-color);
 }
