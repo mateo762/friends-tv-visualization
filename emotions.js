@@ -477,7 +477,7 @@ function startEmotions() {
         .attr("class", "tooltip")
         .style("opacity", 0);
         
-        const emotion_colors = ["#2d8659", "#f94144", "#bfbfbf", "#c9184a", "#f8961e", "#104696", "#b5179e"]
+        const emotion_colors = ["#2d8659", "#f94144", "#bfbfbf", "#7e1717", "#f8961e", "#104696", "#b5179e"]
         const colorScale = d3.scaleOrdinal()
         .range(emotion_colors);
         
