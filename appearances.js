@@ -182,7 +182,7 @@ function startAppearances() {
                 // Create the y scale
                 // First, evaluate the maximum based on the highest count and add a 10% space to it to fit its description on hover
                 let max = d3.max(dataArray, d => d.count)
-                max = max + (max/10)
+                max = max + (max/8)
                 const yHistogramScale = d3
                 .scaleLinear()
                 .domain([0, max])
@@ -265,6 +265,13 @@ function startAppearances() {
                         .attr('width', profilePicDimension)
                         .attr('height', profilePicDimension)
                         .attr('xlink:href',`pictures/${character}.png`)
+                    histogramSvg.append("text")
+                        .attr('x',x + 10)
+                        .attr('y',y)
+                        .attr('class','profile-img-desc')
+                        .attr('width', profilePicDimension)
+                        .attr('height', profilePicDimension)
+                        .text(this.__data__.count)
                     x = x + (profilePicDimension/2)
                     y = y + profilePicDimension
                     histogramSvg.append("line")
@@ -279,7 +286,8 @@ function startAppearances() {
 
                 });
                 bars.on("mouseout", function (d) {
-                    d3.selectAll('.profile-img').remove()
+                    d3.selectAll('.profile-img').remove() 
+                    d3.selectAll('.profile-img-desc').remove()
                     d3.selectAll('.profile-img-connect-line').remove()
                 });
 
@@ -322,7 +330,12 @@ function startAppearances() {
                             content.innerHTML += `<a class="episode" id="${ep}">Episode ${ep}</a>`
                         }
 
-                        document.getElementById("01").setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                        if (season!='all') {
+                            document.getElementById("01").setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                            btn.removeAttribute('style');
+                        } else{
+                            btn.setAttribute('style', 'display: none;');
+                        }
                         let epLinks = document.querySelectorAll('.episode')
                         epLinks.forEach((ep)=>{
                             ep.addEventListener(("click"),function(d) {
