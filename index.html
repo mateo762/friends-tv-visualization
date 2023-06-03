@@ -6,6 +6,7 @@
     <title>Friends Interactive Network Graph</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="build/d3.layout.cloud.js"></script>
+    <script src="radarchart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -83,6 +84,11 @@
         </div>
         <h1>How do they feel?</h1>
         <div id="my_dataviz"></div>
+        <div id="emotion-wordcloud"></div>
+        <div id="personality">
+            <div class="character-images"></div>
+            <div class="radarChart"></div>
+        </div>
         <h1>Some numbers</h1>
         <div id="last-viz">
             <div class="radio-container">
@@ -106,8 +112,9 @@
                 <label for="season-appearances-9">Season 9</label>
                 <input type="radio" id="season-appearances-10" name="season-appearances" value="season-appearances-10">
                 <label for="season-appearances-10">Season 10</label>
-            
-                <input type="radio" id="all-season-appearances" name="season-appearances" value="all-season-appearances" checked>
+
+                <input type="radio" id="all-season-appearances" name="season-appearances" value="all-season-appearances"
+                    checked>
                 <label for="all-season-appearances">All seasons</label>
             </div>
             <div class="radio-container">
@@ -119,9 +126,11 @@
                 </div>
             </div>
         </div>
+
     </div>
     <script src="interactions.js"></script>
     <script src="emotions.js"></script>
+    <script src="personality.js"></script>
     <script src="appearances.js"></script>
 </body>
 
