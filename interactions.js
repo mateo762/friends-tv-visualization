@@ -104,19 +104,20 @@ function startInteractions() {
                 .attr("x", xRect)
 
 
-            infoTooltip.append("text")
-                .attr("class", "title-info")
-                .text("The Friendships Web")
-                .attr("x", xRect + width / 6)
-                .attr("y", 50)
-                .attr("font-size", "24px")
-                .attr("font-weight", "bold")
-                .attr("text-anchor", "middle")
+            // infoTooltip.append("text")
+            //     .attr("class", "title-info")
+            //     .text("The Friendships Web")
+            //     .attr("x", xRect + width / 6)
+            //     .attr("y", 50)
+            //     .attr("font-size", "24px")
+            //     .attr("font-weight", "bold")
+            //     .attr("text-anchor", "middle")
 
-            const textParagraph1 = wordWrap("Welcome to 'The Friendships Web', our first visualization that draws you into the heart of Friends' complex relationships. This interactive graph illuminates the connections between our beloved characters across the show's lifespan. Select between the early years (Seasons 1-3), the middle years (Seasons 4-7), the later years (Seasons 8-10), or plunge into the entire series at a glance with our comprehensive graph. Each character is a node in this network, with the edge's thickness and color indicating the depth and frequency of their interactions - the darker the edge, the stronger the connection.", 50)
+            const textParagraph1 = wordWrap("Welcome to 'The Friendships Web', our first visualization that draws you into the heart of Friends' complex relationships. This interactive graph illuminates the connections between our beloved characters across the show's lifespan. Select between the early years (Seasons 1-3), the middle years (Seasons 4-7), the later years (Seasons 8-10), or plunge into the entire series at a glance with our comprehensive graph. Each character is a node in this network, with the edge's thickness and color indicating the depth and frequency of their interactions - the darker the edge, the stronger the connection. Blue edges are interactions between main characters only and orange edges are when at least one character is secondary.", 50)
+
 
             infoTooltip.append("text")
-                .attr("y", 80)
+                .attr("y", 30)
                 .attr("font-size", "18px")
                 .attr("text-anchor", "middle")
                 .attr("class", "text-paragraph-1")
