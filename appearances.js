@@ -227,17 +227,25 @@ function startAppearances() {
             maxNumberOfWords = wordsCountData['max']
         })
     }).then(function (){
+        d3.json(link("words_usages")).then(function (usages_data) {
+            wordsUsagesCountData = usages_data
+        })
+    }).then(function (){
         d3.json(link("character_appearances")).then(function (apperancesData) {
-            function histogram(svg,data,season,xlabel,ylabel) {
+            function histogram(svg,data,season,xlabel,ylabel,perCharacter=false,name) {
                 
                 /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
-                let dataCopy = {}
-                keys = Object.keys(data)
-                for(let i = 0; i < keys.length;i++) {
-                    let name = keys[i]
-                    dataCopy[name] = data[name][season]
+                if (perCharacter == true) {
+                    data = data[name][season]
+                } else {
+                    let dataCopy = {}
+                    keys = Object.keys(data)
+                    for(let i = 0; i < keys.length;i++) {
+                        let name = keys[i]
+                        dataCopy[name] = data[name][season]
+                    }
+                    data = dataCopy
                 }
-                data = dataCopy
                 
                 // First, we convert the data to an array such that each index corresponds to a character and its appearances' count
                 const dataArray = Object.entries(data).map(([name, count]) => ({ name, count }));
@@ -313,6 +321,7 @@ function startAppearances() {
             let histogramSvg = createSvg()
             let linesScatterplotSvg = createSvg()
             let wordsScatterplotSvg = createSvg()
+            let wordsUsagesHistogramSvg = createSvg()
 
             function addHistogramListeners(bars) {
                 bars.on("click", function (d) {
@@ -376,6 +385,7 @@ function startAppearances() {
                 if(selectedName!='') {
                     updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,maxNumberOfLines,season,"Conversation id","Number of lines",true)
                     updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,maxNumberOfWords,season,"Conversation id","Number of words",false)
+                    histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
             }
 
