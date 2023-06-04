@@ -134,7 +134,6 @@ function startAppearances() {
 
         circles
             .on("mouseover",function(d) {
-                debugger
                 let result = []
                 let conv = `c${this.__data__.name.split('c')[1]}`
                 if (first == true) {
@@ -146,13 +145,16 @@ function startAppearances() {
                 scatterplotSvg.append("text")
                 .attr('x',10)
                 .attr('y',0)
-                .attr('class','profile-img-desc')
+                .attr('class','entry-line')
                 .attr('width', width)
                 .attr('height', 5)
                 .text(result)
+
+                this.r.baseVal.value = this.r.baseVal.value * 2
             })
             .on("mouseout",function(d) {
-                d3.selectAll('.profile-img-desc').remove()
+                d3.selectAll('.entry-line').remove()
+                this.r.baseVal.value = this.r.baseVal.value / 2
             })
         
 
@@ -391,9 +393,7 @@ function startAppearances() {
                                 getSelectedEpisode().removeAttribute('style');
                                 // Set the color of the newly selected <a>
                                 ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
-                                
-                                let e = parseInt(ep.getAttribute('id'))
-                                
+
                                 btn.innerHTML = ep.innerHTML
                                 updateGraphs(season)
                                 });
