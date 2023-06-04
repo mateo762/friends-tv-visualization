@@ -105,6 +105,10 @@ body {
     margin-bottom: 100px;
 }
 
+.emotion-facts{
+    margin-bottom: 100px;
+}
+
 .radio-container {
     margin-bottom: 20px;
 }
@@ -279,7 +283,7 @@ ul {
 }
 
 #personality{
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .radarChart{
@@ -296,6 +300,15 @@ ul {
 .no-margin{
     margin-top: 20px;
     margin-bottom: 100px;
+}
+
+.personality-intro{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.personality-facts{
+    margin-top: 20px;
 }
 
 .bar {
