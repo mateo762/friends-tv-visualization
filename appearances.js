@@ -383,6 +383,36 @@ function startAppearances() {
             // Add event listener to the bars
             addHistogramListeners(bars)
 
+            let season = 's01'
+            let content = document.querySelector('.dropdown-content')
+            let nEpisodes = episodesData[season]
+            let btn = document.querySelector('.dropdown-btn')
+            btn.innerHTML = "All Episodes"
+            content.innerHTML = `<a class="episode" id="all">All Episodes</a>`
+            for (let i = 1; i <= nEpisodes; i++) {
+                let ep = i < 10?"0"+i:i
+                content.innerHTML += `<a class="episode" id="${ep}">Episode ${ep}</a>`
+            }
+
+            if (season!='all') {
+                document.getElementById("all").setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                btn.removeAttribute('style');
+                let epLinks = document.querySelectorAll('.episode')
+                epLinks.forEach((ep)=>{
+                    ep.addEventListener(("click"),function(d) {
+                        // Reset backgroundColor of previously selected <a> tag and select the new one
+                        getSelectedEpisode().removeAttribute('style');
+                        // Set the color of the newly selected <a>
+                        ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
+
+                        btn.innerHTML = ep.innerHTML
+                        updateGraphs(season)
+                    });
+                });
+            } else{
+                btn.setAttribute('style', 'display: none;');
+            }
+
             let inputs = document.querySelectorAll('#last-viz > .radio-container > [name="season-appearances"]')
             inputs.forEach((input) => {
                 input.addEventListener('change', function(e) {
