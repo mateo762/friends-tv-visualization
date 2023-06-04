@@ -1,11 +1,12 @@
 function startAppearances() {
     let selectedName = ''
+    let maxNumberOfLines = 0
+    let maxNumberOfWords = 0
     let linesData = []
     let separatedLinesData = []
     let episodesData = []
     let linesCountData = []
     let wordsCountData = []
-    let wordsUsagesCountData = []
     let margin = {top: 25, right: 60, bottom: 60, left: 120};
     const width = 700 - margin.left - margin.right;
     const height = 500 - margin.top - margin.bottom;
@@ -62,16 +63,24 @@ function startAppearances() {
         }
         let filteredData = []
 
+        let episode = ''
         if (season != 'all') {
-            let id = parseInt(getSelectedEpisode().getAttribute('id'))
-            let episode = `e${id<10?"0"+id:id}`
-            if (first == true) {
-                filteredData = linesData[name][season][episode]
-            } else {
-                filteredData = separatedLinesData[name][season][episode]
+            let id = getSelectedEpisode().getAttribute('id')
+            if (id != 'all') {
+                id = parseInt(id)
             }
+            episode = id=='all'? id : `e${id<10?"0"+id:id}`
+            let data = []
+            if (first == true) {
+                data = linesData[name][season]
+            } else {
+                data = separatedLinesData[name][season]
+            }
+            filteredData = data
             countArrayData = countArrayData.filter((name) => name.name.startsWith(season))
-            countArrayData = countArrayData.filter((name) => name.name.includes(episode))
+            if (episode != 'all') {
+                countArrayData = countArrayData.filter((name) => name.name.includes(episode))
+            }
         }
         countArrayDataFiltered = []
         countArrayData.forEach((object) => {
@@ -134,23 +143,31 @@ function startAppearances() {
 
         circles
             .on("mouseover",function(d) {
-                let result = []
-                let conv = `c${this.__data__.name.split('c')[1]}`
-                if (first == true) {
-                    result = filteredData[conv][0]
-                } else {
-                    let utt = this.__data__.utt
-                    result = filteredData[conv][utt]
-                }
-                scatterplotSvg.append("text")
-                .attr('x',10)
-                .attr('y',0)
-                .attr('class','entry-line')
-                .attr('width', width)
-                .attr('height', 5)
-                .text(result)
-
                 this.r.baseVal.value = this.r.baseVal.value * 2
+                if (season != 'all') {
+                    let result = []
+                    let split = this.__data__.name.split('c')
+                    let ep = split[0]
+                    let conv = `c${split[1]}`
+                    debugger
+                    episodeData = filteredData[ep]
+                    if (first == true) {
+                        result = episodeData[conv][0]
+                    } else {
+                        let utt = this.__data__.utt
+                        result = episodeData[conv][utt]
+                    }
+                    scatterplotSvg.append("text")
+                    .attr('x',10)
+                    .attr('y',0)
+                    .attr('class','entry-line')
+                    .attr('width', width)
+                    .attr('height', 5)
+                    .attr('font-family',`'sans-serif'`)
+                    .attr('font-weight',`bold`)
+                    .text(result)
+                }
+
             })
             .on("mouseout",function(d) {
                 d3.selectAll('.entry-line').remove()
@@ -158,10 +175,16 @@ function startAppearances() {
             })
         
 
+        let animationDuration = 1000
+        if (season == 'all') {
+            animationDuration = 5
+        } else if (episode == 'all') {
+            animationDuration = 20
+        }
         circles
             .transition()
-            .duration(1000)
-            .delay(function(d,i){ return i * (1000 / 4); })
+            .duration(animationDuration)
+            .delay(function(d,i){ return i * (animationDuration / 4); })
             .style('opacity', 1);
         // Add the x-axis for the scatterplot
         scatterplotSvg.append("g")
@@ -203,25 +226,18 @@ function startAppearances() {
             wordsCountData = words_data
         })
     }).then(function (){
-        d3.json(link("words_usages")).then(function (usages_data) {
-            wordsUsagesCountData = usages_data
-        })
-    }).then(function (){
         d3.json(link("character_appearances")).then(function (apperancesData) {
-            function histogram(svg,data,season,xlabel,ylabel,perCharacter=false,name) {
+            function histogram(svg,data,season,xlabel,ylabel) {
                 
                 /* Prepare element for the following viz (scatter plot of number of lines per appearance) */
-                if (perCharacter == true) {
-                    data = data[name][season]
-                } else {
-                    let dataCopy = {}
-                    keys = Object.keys(data)
-                    for(let i = 0; i < keys.length;i++) {
-                        name = keys[i]
-                        dataCopy[name] = data[name][season]
-                    }
-                    data = dataCopy
+                let dataCopy = {}
+                keys = Object.keys(data)
+                for(let i = 0; i < keys.length;i++) {
+                    let name = keys[i]
+                    dataCopy[name] = data[name][season]
                 }
+                data = dataCopy
+                
                 // First, we convert the data to an array such that each index corresponds to a character and its appearances' count
                 const dataArray = Object.entries(data).map(([name, count]) => ({ name, count }));
                 
@@ -296,7 +312,6 @@ function startAppearances() {
             let histogramSvg = createSvg()
             let linesScatterplotSvg = createSvg()
             let wordsScatterplotSvg = createSvg()
-            let wordsUsagesHistogramSvg = createSvg()
 
             function addHistogramListeners(bars) {
                 bars.on("click", function (d) {
@@ -324,6 +339,7 @@ function startAppearances() {
                         .attr('class','profile-img-desc')
                         .attr('width', profilePicDimension)
                         .attr('height', profilePicDimension)
+                        .attr('font-family', 'sans-serif')
                         .text(this.__data__.count)
                     x = x + (profilePicDimension/2)
                     y = y + profilePicDimension
@@ -359,7 +375,6 @@ function startAppearances() {
                 if(selectedName!='') {
                     updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines",true)
                     updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,120,season,"Conversation id","Number of words",false)
-                    histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
             }
 
@@ -376,26 +391,26 @@ function startAppearances() {
                         let content = document.querySelector('.dropdown-content')
                         let nEpisodes = episodesData[season]
                         let btn = document.querySelector('.dropdown-btn')
-                        btn.innerHTML = "Episode 01"
-                        content.innerHTML = ''
+                        btn.innerHTML = "All Episodes"
+                        content.innerHTML = `<a class="episode" id="all">All Episodes</a>`
                         for (let i = 1; i <= nEpisodes; i++) {
                             let ep = i < 10?"0"+i:i
                             content.innerHTML += `<a class="episode" id="${ep}">Episode ${ep}</a>`
                         }
 
                         if (season!='all') {
-                            document.getElementById("01").setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                            document.getElementById("all").setAttribute('style', 'background-color: rgb(0, 123, 255);')
                             btn.removeAttribute('style');
                             let epLinks = document.querySelectorAll('.episode')
                             epLinks.forEach((ep)=>{
                                 ep.addEventListener(("click"),function(d) {
                                     // Reset backgroundColor of previously selected <a> tag and select the new one
-                                getSelectedEpisode().removeAttribute('style');
-                                // Set the color of the newly selected <a>
-                                ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
+                                    getSelectedEpisode().removeAttribute('style');
+                                    // Set the color of the newly selected <a>
+                                    ep.setAttribute('style', 'background-color: rgb(0, 123, 255);')
 
-                                btn.innerHTML = ep.innerHTML
-                                updateGraphs(season)
+                                    btn.innerHTML = ep.innerHTML
+                                    updateGraphs(season)
                                 });
                             });
                         } else{
