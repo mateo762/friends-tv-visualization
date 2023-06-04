@@ -8,8 +8,8 @@ function startAppearances() {
     let linesCountData = []
     let wordsCountData = []
     let margin = {top: 25, right: 60, bottom: 60, left: 120};
-    const width = 700 - margin.left - margin.right;
-    const height = 500 - margin.top - margin.bottom;
+    const width = 1400 - margin.left - margin.right;
+    const height = 600 - margin.top - margin.bottom;
 
     function getSeasonOfInput(input) {
         if (input.getAttribute('id') == "all-season-appearances") {
