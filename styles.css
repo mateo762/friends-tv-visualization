@@ -97,7 +97,7 @@ body {
 }
 
 #interaction {
-    margin-top: 100px;
+    margin-top: 30px;
     margin-bottom: 100px;
 }
 
@@ -309,6 +309,7 @@ ul {
 
 .personality-facts{
     margin-top: 20px;
+    margin-bottom: 100px;
 }
 
 .bar {
@@ -354,3 +355,7 @@ ul {
   .dropdown:hover .dropdown-content {display: block;}
   
   .dropdown:hover .dropdown-btn {background-color: #006ee4;}
+
+  .introduction{
+    margin-bottom: 100px;
+  }
