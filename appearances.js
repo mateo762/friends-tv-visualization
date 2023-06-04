@@ -116,8 +116,12 @@ function startAppearances() {
         let distanceFromColumnCenter = ((width/2)/conversationsCount)
         let radius = 5
 
+        let colorScale = d3.scaleLinear()
+                .domain([0, max])
+                .range(['#002244', '#7FFFD4']);
+
         // Create the circles for the scatterplot
-        scatterplotSvg.selectAll(".circle")
+        let circles = scatterplotSvg.selectAll(".circle")
             .data(countArrayDataFiltered)
             .enter()
             .append("circle")
@@ -125,7 +129,12 @@ function startAppearances() {
             .attr("cx", function (d) { return xScatterplotScale(d.name) + distanceFromColumnCenter - radius; })
             .attr("cy", function (d) { return yScatterplotScale(d.count); })
             .attr("r", radius)
+            .attr('fill',d => colorScale(d.count))
+            .style('opacity', 0);
+
+        circles
             .on("mouseover",function(d) {
+                debugger
                 let result = []
                 let conv = `c${this.__data__.name.split('c')[1]}`
                 if (first == true) {
@@ -134,7 +143,6 @@ function startAppearances() {
                     let utt = this.__data__.utt
                     result = filteredData[conv][utt]
                 }
-                result = result.join(' ')
                 scatterplotSvg.append("text")
                 .attr('x',10)
                 .attr('y',0)
@@ -146,7 +154,13 @@ function startAppearances() {
             .on("mouseout",function(d) {
                 d3.selectAll('.profile-img-desc').remove()
             })
+        
 
+        circles
+            .transition()
+            .duration(1000)
+            .delay(function(d,i){ return i * (1000 / 4); })
+            .style('opacity', 1);
         // Add the x-axis for the scatterplot
         scatterplotSvg.append("g")
             .attr("transform", "translate(0," + height + ")")
