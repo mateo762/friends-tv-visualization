@@ -149,7 +149,6 @@ function startAppearances() {
                     let split = this.__data__.name.split('c')
                     let ep = split[0]
                     let conv = `c${split[1]}`
-                    debugger
                     episodeData = filteredData[ep]
                     if (first == true) {
                         result = episodeData[conv][0]
@@ -220,10 +219,12 @@ function startAppearances() {
     }).then(function (){
         d3.json(link("lines_counts")).then(function (linesData) {
             linesCountData = linesData
+            maxNumberOfLines = linesCountData['max']
         })
     }).then(function (){
         d3.json(link("words_per_line")).then(function (words_data) {
             wordsCountData = words_data
+            maxNumberOfWords = wordsCountData['max']
         })
     }).then(function (){
         d3.json(link("character_appearances")).then(function (apperancesData) {
@@ -373,8 +374,8 @@ function startAppearances() {
                 addHistogramListeners(bars)
     
                 if(selectedName!='') {
-                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines",true)
-                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,120,season,"Conversation id","Number of words",false)
+                    updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,maxNumberOfLines,season,"Conversation id","Number of lines",true)
+                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,maxNumberOfWords,season,"Conversation id","Number of words",false)
                 }
             }
 
