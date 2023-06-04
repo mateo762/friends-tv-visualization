@@ -55,8 +55,11 @@ function startAppearances() {
 
         // Transform the data for the selected character into an array
         let countArrayData = Object.entries(data[name]).map(([name, count]) => ({ name, count }));
-        // let linesArrayData = Object.entries(linesData[name]).map(([name, count]) => ({ name, count }));
 
+        let names = []
+        for (let i = 0; i < countArrayData.length; i++) {
+            names.push(countArrayData[i].name)
+        }
         let filteredData = []
 
         if (season != 'all') {
@@ -75,6 +78,7 @@ function startAppearances() {
             val = {}
             val.count = object.count
             let splittedName = object.name.split('_')
+            let utt = splittedName[3]
             splittedName = splittedName.reduce((accumulator, current, currentIndex) => {
                 if (currentIndex != 0 && currentIndex != 3) {
                     return accumulator + current;
@@ -82,6 +86,7 @@ function startAppearances() {
                 return accumulator
             }, '');  
             val.name = splittedName
+            val.utt = utt
             countArrayDataFiltered.push(val)
         });
 
@@ -110,8 +115,7 @@ function startAppearances() {
         }
         let distanceFromColumnCenter = ((width/2)/conversationsCount)
         let radius = 5
-        
-        console.log(filteredData)
+
         // Create the circles for the scatterplot
         scatterplotSvg.selectAll(".circle")
             .data(countArrayDataFiltered)
@@ -122,9 +126,14 @@ function startAppearances() {
             .attr("cy", function (d) { return yScatterplotScale(d.count); })
             .attr("r", radius)
             .on("mouseover",function(d) {
-                debugger
+                let result = []
                 let conv = `c${this.__data__.name.split('c')[1]}`
-                let result = filteredData[conv][0]
+                if (first == true) {
+                    result = filteredData[conv][0]
+                } else {
+                    let utt = this.__data__.utt
+                    result = filteredData[conv][utt]
+                }
                 result = result.join(' ')
                 scatterplotSvg.append("text")
                 .attr('x',10)
@@ -333,7 +342,7 @@ function startAppearances() {
     
                 if(selectedName!='') {
                     updateScatterplot(linesScatterplotSvg, linesCountData, selectedName,30,season,"Conversation id","Number of lines",true)
-                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,200,season,"Conversation id","Number of words",false)
+                    updateScatterplot(wordsScatterplotSvg, wordsCountData, selectedName,120,season,"Conversation id","Number of words",false)
                     histogram(wordsUsagesHistogramSvg, wordsUsagesCountData, season, "Words", "Number of usages", true, selectedName)
                 }
             }
